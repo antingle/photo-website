@@ -19,13 +19,18 @@
     background-color: var(--color-bg-light-secondary);
   }
 
-  .bg-gradient {
+  .bg-gradient,
+  .bg-gradient-secondary {
     background-image: var(--accent-gradient);
     background-size: 400%;
     background-position: 100%;
-    transition: background-position 1s cubic-bezier(0.22, 1, 0.36, 1),
-      color 1s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: background-position 1s cubic-bezier(0.22, 1, 0.36, 1), color 1s cubic-bezier(0.22, 1, 0.36, 1);
   }
+
+  .bg-gradient-secondary {
+    background-image: var(--accent-gradient-secondary);
+  }
+
   .text-gradient {
     background-image: var(--accent-gradient);
     -webkit-background-clip: text;
@@ -36,6 +41,7 @@
   }
 
   .bg-gradient:is(:hover, :focus-within),
+  .bg-gradient-secondary:is(:hover, :focus-within),
   .text-gradient:is(:hover, :focus-within) {
     background-position: 0;
   }
@@ -45,11 +51,11 @@
   }
 
   .btn-ghost {
-    @apply border-none shadow-none text-muted hover:text-gray-900;
+    @apply shadow-none text-gray-900 hover:text-white hover:bg-gray-900 border-gray-900;
   }
 
   .btn-primary {
-    @apply font-semibold bg-gradient text-slate-900 border-gray-900 hover:text-white;
+    @apply font-semibold bg-gradient-secondary text-white border-none;
   }
 }
 

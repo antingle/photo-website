@@ -2,17 +2,18 @@
   :root {
     --color-primary: rgb(17 24 39);
     --color-secondary: rgb(30 58 138);
-    --color-accent: rgb(255, 130, 28);
+    --color-accent: rgb(145, 28, 255);
     --color-text-light: rgb(17 24 39);
     --color-text-muted: rgb(75 85 99);
     --color-bg-light: rgb(255 255 255);
     --color-bg-light-secondary: rgb(241, 245, 249);
 
-    --accent-gradient: linear-gradient(
+    --accent-gradient: linear-gradient(45deg, var(--color-accent), rgb(74, 183, 255) 30%, rgba(255, 255, 255) 60%);
+    --accent-gradient-secondary: linear-gradient(
       45deg,
       var(--color-accent),
-      rgb(135, 207, 255) 30%,
-      rgb(255, 255, 255) 60%
+      rgb(74, 183, 255) 30%,
+      rgba(0, 0, 0, 0.9) 70%
     );
   }
   html {
