@@ -1,0 +1,54 @@
+---
+import Logo from "./Logo.astro";
+import type { MenuLink, SocialLink } from ".";
+import { NAME } from "../config";
+import { Icon } from "astro-icon";
+
+export interface Props {
+  links?: Array<MenuLink>;
+  social: Array<SocialLink>;
+}
+
+const { links = [], social = [] } = Astro.props;
+---
+
+<footer class="bg-light-secondary rounded-xl m-4">
+  <div class="w-full container mx-auto p-4 md:px-6 md:py-8">
+    <div class="sm:flex sm:items-center sm:justify-between">
+      <a href="/" class="flex items-center mb-4 sm:mb-0 justify-center">
+        <Logo />
+      </a>
+      <ul
+        class="flex flex-wrap items-center justify-center mb-6 text-sm text-gray-600 sm:mb-0 gap-4 md:gap-6"
+      >
+        {
+          links.map(({ text, href }) => (
+            <li>
+              <a class="hover:text-gray-900" href={href}>
+                {text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <hr class="my-6 border-gray-400 sm:mx-auto lg:my-8" />
+    <div class="sm:flex sm:items-center sm:justify-between">
+      <span class="block text-sm text-muted text-center font-light">
+        &copy; {new Date().getFullYear()}&nbsp;{NAME}</span
+      >
+
+      <div class="flex mt-4 gap-6 justify-center sm:mt-0">
+        {
+          social.map(({ ariaLabel, href, icon, customClasses }) => (
+            <a href={href} class:list={["text-muted", customClasses]}>
+              <Icon class="w-7 h-7 md:w-6 md:h-6" name={icon} />
+              <span class="sr-only">{ariaLabel}</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</footer>

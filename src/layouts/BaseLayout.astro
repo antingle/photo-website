@@ -1,0 +1,40 @@
+---
+import "../assets/styles/base.css";
+import BasicScripts from "../common/BasicScripts.astro";
+import CustomStyles from "../common/CustomStyles.astro";
+import Footer from "../common/Footer.astro";
+import Header from "../common/Header.astro";
+import { LINKS, NAME, SOCIAL } from "../config";
+
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{NAME} | {title}</title>
+    <CustomStyles />
+  </head>
+  <body>
+    <slot name="header">
+      <Header
+        isSticky
+        links={LINKS}
+        actions={[{ text: "Book", href: "/book", type: "primary" }]}
+      />
+    </slot>
+
+    <slot />
+
+    <slot name="footer"><Footer links={LINKS} social={SOCIAL} /></slot>
+    <BasicScripts />
+  </body>
+</html>

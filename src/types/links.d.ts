@@ -12,3 +12,7 @@ interface ActionLink extends Link {
 export interface MenuLink extends Link {
   links?: Array<Link>;
 }
+
+export interface SocialLink extends Link {
+  customClasses?: Array<string>;
+}
