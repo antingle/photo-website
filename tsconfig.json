@@ -3,6 +3,12 @@
   "compilerOptions": {
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "ignoreDeprecations": "5.0"
+    "ignoreDeprecations": "5.0",
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "src/*"
+      ]
+    }
   }
 }

@@ -1,4 +1,4 @@
-import type { MenuLink, SocialLink } from "./types/links";
+import type { MenuLink, SocialLink } from "~/types/links";
 const LINKS: MenuLink[] = [
   { text: "Home", href: "/" },
   { text: "About", href: "/about" },

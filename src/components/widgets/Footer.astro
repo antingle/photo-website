@@ -1,7 +1,7 @@
 ---
-import Logo from "./Logo.astro";
-import type { MenuLink, SocialLink } from ".";
-import { NAME } from "../config";
+import Logo from "~/components/common/Logo.astro";
+import type { MenuLink, SocialLink } from "~/types/links";
+import { NAME } from "~/config";
 import { Icon } from "astro-icon";
 
 export interface Props {
@@ -42,7 +42,7 @@ const { links = [], social = [] } = Astro.props;
       <div class="flex mt-4 gap-6 justify-center sm:mt-0">
         {
           social.map(({ ariaLabel, href, icon, customClasses }) => (
-            <a href={href} class:list={["text-muted", customClasses]}>
+            <a href={href} rel="noreferrer" target="_blank" class:list={["text-muted", customClasses]}>
               <Icon class="w-7 h-7 md:w-6 md:h-6" name={icon} />
               <span class="sr-only">{ariaLabel}</span>
             </a>
