@@ -61,7 +61,7 @@ for (let i = 1.0; i < 3; i += 0.5) {
     data.map((photo) => {
       const srcset = srcsetSizes.map((size) => `${photo.url}?tr=w-${size} ${size}w`).join(", ");
       return (
-        <div class="bg-gray-200">
+        <div class="bg-light-secondary">
           <Image
             class="lazyload blurred"
             src={`${photo.url}?tr=w-${mConfig.columnSize},q-50`}

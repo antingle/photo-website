@@ -1,0 +1,27 @@
+---
+import Image from "astro/components/Image.astro";
+import Layout from "~/layouts/BaseLayout.astro";
+---
+
+<Layout title={"About"}>
+  <main class="flex flex-wrap justify-center items-center gap-4 mx-4 mb-8">
+    <article class="max-w-full w-96">
+      <Image
+        src="https://ik.imagekit.io/anthonyinglephoto/anthony"
+        alt="Anthony Ingle"
+        height={2700}
+        width={1800}
+        class="w-auto h-auto rounded"
+        loading={"eager"}
+      />
+    </article>
+    <article class="w-96 p-4 rounded flex flex-col items-start justify-center">
+      <h1 class="text-gray-900 text-4xl mb-4 font-extrabold">Hey, I'm Anthony</h1>
+      <p>
+        One of my favorite things to hold in my hands is my camera. I love capturing moments for
+        people that they will remember forever. I am also a Computer Science major at Florida State
+        University. In my freetime I will sit down and build some stuff, like this website.
+      </p>
+    </article>
+  </main>
+</Layout>
