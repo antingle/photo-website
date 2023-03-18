@@ -24,7 +24,8 @@
     background-image: var(--accent-gradient);
     background-size: 400%;
     background-position: 100%;
-    transition: background-position 1s cubic-bezier(0.22, 1, 0.36, 1), color 1s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: background-position 1s cubic-bezier(0.22, 1, 0.36, 1),
+      color 1s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .bg-gradient-secondary {
@@ -55,17 +56,17 @@
   }
 
   .btn-primary {
-    @apply font-semibold bg-gradient-secondary text-white border-none;
+    @apply font-semibold bg-gray-900 text-white border-none hover:bg-gray-900/90;
   }
 }
 
-[data-aw-toggle-menu] path {
+[data-toggle-nav] path {
   @apply transition;
 }
-[data-aw-toggle-menu].expanded g > path:first-child {
+[data-toggle-nav].expanded g > path:first-child {
   @apply -rotate-45 translate-y-[15px] translate-x-[-3px];
 }
 
-[data-aw-toggle-menu].expanded g > path:last-child {
+[data-toggle-nav].expanded g > path:last-child {
   @apply rotate-45 translate-y-[-8px] translate-x-[14px];
 }

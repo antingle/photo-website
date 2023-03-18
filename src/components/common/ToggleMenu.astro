@@ -11,12 +11,12 @@ export interface Props {
 const {
   label = "Toggle Menu",
   class:
-    className = "text-gray-500 focus:outline-none focus:ring-4 focus:ring-gray-200 rounded-lg text-sm inline-flex items-center transition duration-300",
+    className = "text-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-200 rounded-lg text-sm inline-flex items-center transition duration-300",
   iconClass = "w-6 h-6",
   iconName = "tabler:menu",
 } = Astro.props;
 ---
 
-<button type="button" class={className} aria-label={label} data-aw-toggle-menu>
+<button type="button" class={className} aria-label={label} data-toggle-nav>
   <Icon name={iconName} class={iconClass} optimize={false} />
 </button>

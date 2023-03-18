@@ -1,5 +1,5 @@
-import path from 'path'
-import { fileURLToPath } from 'url';
+import path from "path";
+import { fileURLToPath } from "url";
 import { defineConfig } from "astro/config";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -12,6 +12,9 @@ import solidJs from "@astrojs/solid-js";
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), solidJs()],
+  experimental: {
+    assets: true,
+  },
   vite: {
     resolve: {
       alias: {

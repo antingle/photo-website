@@ -1,0 +1,106 @@
+---
+import Image from "astro/components/Image.astro";
+import type { IKImage } from "~/types/api";
+
+const key = import.meta.env.IK_PRIVATE_KEY || "";
+// fetch imagekit photos from portfolio folder
+const res = await fetch("https://api.imagekit.io/v1/files?path=portfolio", {
+  method: "GET",
+  headers: {
+    Authorization: `Basic ${btoa(key + ":")}`,
+    "Content-Type": "application/json",
+  },
+});
+const data: IKImage[] = await res.json();
+
+const mConfig = {
+  numCols: 4,
+  columnGap: 16,
+  containerPadding: 32,
+  columnSize: 240,
+};
+
+let sizes = "";
+let maxImageWidth = mConfig.columnSize;
+let srcsetSizes: number[] = [maxImageWidth];
+
+/*
+calculating big brain srcset sizes
+max-width: 32 + 240 + (16 + 240) * {col_num - 1} - 1
+image-width: {max_width - 32 - 16 * {col_num - 2}} / {col_num - 1}
+viewport-width: {{image-width} / {max_width}} * 100
+*/
+for (let i = 2; i < mConfig.numCols + 2; ++i) {
+  const maxWidth =
+    mConfig.containerPadding +
+    mConfig.columnSize +
+    (mConfig.columnGap + mConfig.columnSize) * (i - 1) -
+    1;
+  const imageWidth = Math.ceil(
+    (maxWidth - mConfig.containerPadding - mConfig.columnGap * (i - 2)) / (i - 1)
+  );
+  maxImageWidth = Math.max(imageWidth, maxImageWidth);
+  const viewportWidth = Math.ceil((imageWidth / maxWidth) * 100);
+
+  if (i == mConfig.numCols + 1) {
+    // is last
+    sizes += `${viewportWidth}vw`;
+  } else {
+    sizes += `(max-width:${maxWidth}px) ${viewportWidth}vw, `;
+  }
+}
+
+// generate different srcset sizes
+for (let i = 1.0; i < 3; i += 0.5) {
+  srcsetSizes.push(Math.ceil(maxImageWidth * i));
+}
+---
+
+<div class="masonry-with-columns">
+  {
+    data.map((photo) => {
+      const srcset = srcsetSizes.map((size) => `${photo.url}?tr=w-${size} ${size}w`).join(", ");
+      return (
+        <div class="bg-gray-200">
+          <Image
+            class="lazyload blurred"
+            src={`${photo.url}?tr=w-${mConfig.columnSize},q-50`}
+            data-sizes={sizes}
+            data-srcset={srcset}
+            alt={photo.name}
+            width={photo.width}
+            height={photo.height}
+          />
+        </div>
+      );
+    })
+  }
+</div>
+<style>
+  .masonry-with-columns {
+    columns: 4 240px;
+    column-gap: 1rem;
+    padding: 0rem 1rem;
+  }
+  .masonry-with-columns > div {
+    display: inline-block;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+
+  .blurred {
+    transition: filter 300ms;
+  }
+
+  .blurred.lazyload,
+  .blurred.lazyloading {
+    filter: blur(10px);
+  }
+
+  .blurred.lazyloaded {
+    filter: blur(0px);
+  }
+</style>
+<script>
+  import "lazysizes";
+</script>

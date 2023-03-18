@@ -17,8 +17,7 @@
     applyTheme(defaultTheme.replace(":only", ""));
   } else if (
     localStorage.theme === "dark" ||
-    (!("theme" in localStorage) &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches)
+    (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
   ) {
     applyTheme("dark");
   } else {
@@ -26,10 +25,7 @@
   }
 
   function attachEvent(selector, event, fn) {
-    const matches =
-      typeof selector === "string"
-        ? document.querySelectorAll(selector)
-        : selector;
+    const matches = typeof selector === "string" ? document.querySelectorAll(selector) : selector;
     if (matches && matches.length) {
       matches.forEach((elem) => {
         elem.addEventListener(event, (e) => fn(e, elem), false);
@@ -41,7 +37,7 @@
     let lastKnownScrollPosition = window.scrollY;
     let ticking = true;
 
-    attachEvent("[data-aw-toggle-menu]", "click", function (_, elem) {
+    attachEvent("[data-toggle-nav]", "click", function (_, elem) {
       // document.body.classList.toggle("overflow-hidden");
       // document.getElementById("header")?.classList.toggle("h-screen");
       document.querySelector("#header nav")?.classList.toggle("scale-y-0");
@@ -60,9 +56,7 @@
         return;
       }
       document.documentElement.classList.toggle("dark");
-      localStorage.theme = document.documentElement.classList.contains("dark")
-        ? "dark"
-        : "light";
+      localStorage.theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
     });
 
     attachEvent("[data-aw-social-share]", "click", function (_, elem) {
@@ -100,15 +94,9 @@
 
     function appyHeaderStylesOnScroll() {
       const header = document.getElementById("header");
-      if (
-        lastKnownScrollPosition > 60 &&
-        !header.classList.contains("scroll")
-      ) {
+      if (lastKnownScrollPosition > 60 && !header.classList.contains("scroll")) {
         document.getElementById("header").classList.add("scroll");
-      } else if (
-        lastKnownScrollPosition <= 60 &&
-        header.classList.contains("scroll")
-      ) {
+      } else if (lastKnownScrollPosition <= 60 && header.classList.contains("scroll")) {
         document.getElementById("header").classList.remove("scroll");
       }
       ticking = false;
@@ -129,7 +117,7 @@
 
   window.onpageshow = function () {
     document.documentElement.classList.add("motion-safe:scroll-smooth");
-    const elem = document.querySelector("[data-aw-toggle-menu]");
+    const elem = document.querySelector("[data-toggle-nav]");
     if (elem) {
       elem.classList.remove("expanded");
     }

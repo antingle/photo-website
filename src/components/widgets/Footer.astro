@@ -36,14 +36,19 @@ const { links = [], social = [] } = Astro.props;
     <hr class="my-6 border-gray-400 sm:mx-auto lg:my-8" />
     <div class="sm:flex sm:items-center sm:justify-between">
       <span class="block text-sm text-muted text-center font-light">
-        &copy; {new Date().getFullYear()}&nbsp;{NAME}</span
+        &copy; {NAME} {new Date().getFullYear()}</span
       >
 
       <div class="flex mt-4 gap-6 justify-center sm:mt-0">
         {
           social.map(({ ariaLabel, href, icon, customClasses }) => (
-            <a href={href} rel="noreferrer" target="_blank" class:list={["text-muted", customClasses]}>
-              <Icon class="w-7 h-7 md:w-6 md:h-6" name={icon} />
+            <a
+              href={href}
+              rel="noreferrer"
+              target="_blank"
+              class:list={["text-muted", customClasses]}
+            >
+              <Icon class="w-6 h-6" name={icon} />
               <span class="sr-only">{ariaLabel}</span>
             </a>
           ))
