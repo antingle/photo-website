@@ -2,7 +2,6 @@ import type { ActionLink, MenuLink, SocialLink } from "~/types/links";
 const LINKS: MenuLink[] = [
   { text: "Home", href: "/" },
   { text: "About", href: "/about" },
-  { text: "Packages", href: "/packages" },
   { text: "Contact", href: "/contact" },
 ];
 

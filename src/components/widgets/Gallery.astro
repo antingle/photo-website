@@ -1,5 +1,6 @@
 ---
 import Image from "astro/components/Image.astro";
+import { generateSrcset } from "~/utils/images";
 import type { IKImage } from "~/types/api";
 
 const key = import.meta.env.IK_PRIVATE_KEY || "";
@@ -51,7 +52,7 @@ for (let i = 2; i < mConfig.numCols + 2; ++i) {
 }
 
 // generate different srcset sizes
-for (let i = 1.0; i < 3; i += 0.5) {
+for (let i = 1.0; i < 3.5; i += 0.5) {
   srcsetSizes.push(Math.ceil(maxImageWidth * i));
 }
 ---
@@ -59,14 +60,13 @@ for (let i = 1.0; i < 3; i += 0.5) {
 <div class="masonry-with-columns">
   {
     data.map((photo) => {
-      const srcset = srcsetSizes.map((size) => `${photo.url}?tr=w-${size} ${size}w`).join(", ");
       return (
         <div class="bg-light-secondary">
           <Image
             class="lazyload blurred"
-            src={`${photo.url}?tr=w-${mConfig.columnSize},q-50`}
+            src={`${photo.url}?tr=w-${mConfig.columnSize},q-30`}
             data-sizes={sizes}
-            data-srcset={srcset}
+            data-srcset={generateSrcset(srcsetSizes, photo.url)}
             alt={photo.name}
             width={photo.width}
             height={photo.height}
@@ -89,7 +89,7 @@ for (let i = 1.0; i < 3; i += 0.5) {
   }
 
   .blurred {
-    transition: filter 300ms;
+    transition: filter 400ms;
   }
 
   .blurred.lazyload,
