@@ -1,22 +1,25 @@
 ---
 import Image from "astro/components/Image.astro";
 import Layout from "~/layouts/BaseLayout.astro";
+import { generateSrcset } from "~/utils/images";
+const sizes = [384, 768, 1152];
 ---
 
 <Layout title={"About"}>
-  <main class="flex flex-wrap justify-center items-center gap-4 mx-4 mb-8">
-    <article class="max-w-full w-96">
+  <main class="flex flex-wrap justify-center items-center gap-4 mx-4 mb-12">
+    <article class="w-96 rounded-xl overflow-hidden bg-light-secondary">
       <Image
         src="https://ik.imagekit.io/anthonyinglephoto/anthony"
         alt="Anthony Ingle"
+        sizes="(max-width: 416px) 93vw, 384px"
+        srcset={generateSrcset(sizes, "https://ik.imagekit.io/anthonyinglephoto/anthony")}
         height={2700}
         width={1800}
-        class="w-auto h-auto rounded"
         loading={"eager"}
       />
     </article>
     <article class="w-96 p-4 rounded flex flex-col items-start justify-center">
-      <h1 class="text-gray-900 text-4xl mb-4 font-extrabold">Hey, I'm Anthony</h1>
+      <h1 class="text-gray-900 text-3xl md:text-4xl mb-4 font-extrabold">👋 Hey, I'm Anthony</h1>
       <p>
         One of my favorite things to hold in my hands is my camera. I love capturing moments for
         people that they will remember forever. I am also a Computer Science major at Florida State

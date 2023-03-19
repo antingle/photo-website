@@ -46,6 +46,10 @@
         e.classList.toggle("opacity-0");
       });
 
+      document.querySelectorAll("#header nav div").forEach((e) => {
+        e.classList.toggle("opacity-0");
+      });
+
       document.querySelector("#header > div")?.classList.toggle("max-h-16");
       document.querySelector("#header > div")?.classList.toggle("max-h-96");
       elem.classList.toggle("expanded");

@@ -58,6 +58,10 @@
   .btn-primary {
     @apply font-semibold bg-gray-900 text-white border-none hover:bg-gray-900/90;
   }
+
+  .btn-inverted {
+    @apply font-semibold bg-light text-light border-none hover:bg-white/90;
+  }
 }
 
 [data-toggle-nav] path {

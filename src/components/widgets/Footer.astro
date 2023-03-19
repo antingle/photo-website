@@ -36,8 +36,9 @@ const { links = [], social = [] } = Astro.props;
     <hr class="my-6 border-gray-400 sm:mx-auto lg:my-8" />
     <div class="sm:flex sm:items-center sm:justify-between">
       <span class="block text-sm text-muted text-center font-light">
-        &copy; {NAME} {new Date().getFullYear()}</span
-      >
+        &copy; {new Date().getFullYear()}
+        {NAME}
+      </span>
 
       <div class="flex mt-4 gap-6 justify-center sm:mt-0">
         {
