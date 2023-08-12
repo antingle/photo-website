@@ -100,9 +100,9 @@
 
     function appyHeaderStylesOnScroll() {
       const header = document.getElementById("header");
-      if (lastKnownScrollPosition > 60 && !header.classList.contains("scroll")) {
+      if (lastKnownScrollPosition > 40 && !header.classList.contains("scroll")) {
         document.getElementById("header").classList.add("scroll");
-      } else if (lastKnownScrollPosition <= 60 && header.classList.contains("scroll")) {
+      } else if (lastKnownScrollPosition <= 40 && header.classList.contains("scroll")) {
         document.getElementById("header").classList.remove("scroll");
       }
       ticking = false;

@@ -1,6 +1,6 @@
 import type { ActionLink, MenuLink, SocialLink } from "~/types/links";
 const LINKS: MenuLink[] = [
-  { text: "Home", href: "/" },
+  { text: "Gallery", href: "/" },
   { text: "About", href: "/about" },
   { text: "Contact", href: "/contact" },
 ];
@@ -21,10 +21,22 @@ const SOCIAL: SocialLink[] = [
     customClasses: ["hover:text-fuchsia-600"],
   },
   {
+    icon: "ic:baseline-tiktok",
+    ariaLabel: "TikTok Profile",
+    href: "https://www.tiktok.com/@ant.photos",
+    customClasses: ["hover:text-black"],
+  },
+  {
+    icon: "ri:youtube-fill",
+    ariaLabel: "Youtube Shorts Page",
+    href: "https://www.youtube.com/@antphotos/shorts",
+    customClasses: ["hover:text-red-500"],
+  },
+  {
     icon: "mdi:github",
     ariaLabel: "Github Account",
     href: "https://www.github.com/ingleanthony/",
-    customClasses: ["hover:text-gray-900"],
+    customClasses: ["hover:text-slate-800"],
   },
 ];
 
