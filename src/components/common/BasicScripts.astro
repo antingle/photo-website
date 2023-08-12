@@ -52,6 +52,8 @@
 
       document.querySelector("#header > div")?.classList.toggle("max-h-16");
       document.querySelector("#header > div")?.classList.toggle("max-h-96");
+      document.querySelector("#header > div > div")?.classList.toggle("max-h-16");
+      document.querySelector("#header > div > div")?.classList.toggle("max-h-96");
       elem.classList.toggle("expanded");
     });
 
@@ -98,9 +100,9 @@
 
     function appyHeaderStylesOnScroll() {
       const header = document.getElementById("header");
-      if (lastKnownScrollPosition > 60 && !header.classList.contains("scroll")) {
+      if (lastKnownScrollPosition > 40 && !header.classList.contains("scroll")) {
         document.getElementById("header").classList.add("scroll");
-      } else if (lastKnownScrollPosition <= 60 && header.classList.contains("scroll")) {
+      } else if (lastKnownScrollPosition <= 40 && header.classList.contains("scroll")) {
         document.getElementById("header").classList.remove("scroll");
       }
       ticking = false;
