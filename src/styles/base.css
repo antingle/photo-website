@@ -48,7 +48,7 @@
   }
 
   .btn {
-    @apply inline-flex items-center justify-center rounded-2xl shadow-md border-gray-400 border-2 bg-transparent font-medium text-center text-base text-light leading-snug py-3.5 px-6 md:px-8 ease-in duration-200 focus:ring-blue-500 focus:ring-offset-blue-200 focus:ring-2 focus:ring-offset-2 hover:bg-gray-100 hover:border-gray-600;
+    @apply inline-flex items-center justify-center rounded-2xl shadow-md border-gray-400 box-border border-2 bg-transparent font-medium text-center text-base text-light leading-snug py-3.5 px-6 md:px-8 ease-in duration-200 focus:ring-blue-500 focus:ring-offset-blue-200 focus:ring-2 focus:ring-offset-2 hover:bg-gray-100 hover:border-gray-600;
   }
 
   .btn-ghost {
@@ -56,11 +56,7 @@
   }
 
   .btn-primary {
-    @apply font-semibold bg-gray-900 text-white border-none hover:bg-gray-900/90;
-  }
-
-  .btn-inverted {
-    @apply font-semibold bg-light text-light border-none hover:bg-white/90;
+    @apply bg-gray-900 text-white border-none hover:bg-gray-900/90;
   }
 }
 
@@ -77,4 +73,79 @@
 
 .scroll {
   @apply shadow-xl;
+}
+
+@keyframes slidein {
+  from {
+    transform: translateY(5%);
+    opacity: 0%;
+  }
+  to {
+    transform: translateY(0%);
+    opacity: 100%;
+  }
+}
+
+@keyframes slidein-links {
+  from {
+    transform: translateY(20%);
+    opacity: 0%;
+  }
+  to {
+    transform: translateY(0%);
+    opacity: 100%;
+  }
+}
+
+@keyframes slidein-links-reverse {
+  from {
+    transform: translateY(0%);
+    opacity: 100%;
+  }
+  to {
+    transform: translateY(-20%);
+    opacity: 0%;
+  }
+}
+
+@keyframes fadein-links {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+
+@keyframes fadein-links-reverse {
+  from {
+    opacity: 100%;
+  }
+  to {
+    opacity: 0%;
+  }
+}
+
+.slidein-intersect {
+  opacity: 0%;
+}
+
+.animate-slidein {
+  animation: slidein 1s forwards;
+}
+
+.slidein-links {
+  animation: slidein-links 0.25s forwards;
+}
+
+.fadein-links {
+  animation: fadein-links 0.5s forwards;
+}
+
+.slidein-links-reverse {
+  animation: slidein-links-reverse 0.25s forwards;
+}
+
+.fadein-links-reverse {
+  animation: fadein-links-reverse 0.25s forwards;
 }
