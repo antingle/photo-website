@@ -1,28 +1,48 @@
 ---
 ---
 
-<script is:inline define:vars={{ defaultTheme: "light" }}>
-  function applyTheme(theme) {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
+<script is:inline>
+  let timeoutId = 0;
+  function onExpansion(isExpanded) {
+    const navHeader = document.querySelector("#header nav");
+    if (isExpanded) {
+      document.querySelector("#header > div")?.classList.add("max-h-96");
+      document.querySelector("#header > div > div")?.classList.add("max-h-96");
+      document.querySelector("#header > div")?.classList.remove("max-h-16");
+      document.querySelector("#header > div > div")?.classList.remove("max-h-16");
+
+      clearTimeout(timeoutId); // to prevent spamming button :)
+      navHeader?.classList.remove("hidden");
     } else {
-      document.documentElement.classList.remove("dark");
+      document.querySelector("#header > div")?.classList.add("max-h-16");
+      document.querySelector("#header > div > div")?.classList.add("max-h-16");
+      document.querySelector("#header > div")?.classList.remove("max-h-96");
+      document.querySelector("#header > div > div")?.classList.remove("max-h-96");
+
+      timeoutId = setTimeout(() => navHeader?.classList.add("hidden"), 500);
     }
   }
+  // function applyTheme(theme) {
+  //   if (theme === "dark") {
+  //     document.documentElement.classList.add("dark");
+  //   } else {
+  //     document.documentElement.classList.remove("dark");
+  //   }
+  // }
 
-  if (
-    (defaultTheme && defaultTheme.endsWith(":only")) ||
-    (!localStorage.theme && defaultTheme !== "system")
-  ) {
-    applyTheme(defaultTheme.replace(":only", ""));
-  } else if (
-    localStorage.theme === "dark" ||
-    (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
-  ) {
-    applyTheme("dark");
-  } else {
-    applyTheme("light");
-  }
+  // if (
+  //   (defaultTheme && defaultTheme.endsWith(":only")) ||
+  //   (!localStorage.theme && defaultTheme !== "system")
+  // ) {
+  //   applyTheme(defaultTheme.replace(":only", ""));
+  // } else if (
+  //   localStorage.theme === "dark" ||
+  //   (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+  // ) {
+  //   applyTheme("dark");
+  // } else {
+  //   applyTheme("light");
+  // }
 
   function attachEvent(selector, event, fn) {
     const matches = typeof selector === "string" ? document.querySelectorAll(selector) : selector;
@@ -38,72 +58,55 @@
     let ticking = true;
 
     attachEvent("[data-toggle-nav]", "click", function (_, elem) {
-      // document.body.classList.toggle("overflow-hidden");
-      // document.getElementById("header")?.classList.toggle("h-screen");
-      document.querySelector("#header nav")?.classList.toggle("scale-y-0");
-      document.querySelectorAll("#header nav ul li").forEach((e) => {
-        e.classList.toggle("-translate-y-8");
-        e.classList.toggle("opacity-0");
-      });
-
-      document.querySelectorAll("#header nav div").forEach((e) => {
-        e.classList.toggle("opacity-0");
-      });
-
-      document.querySelector("#header > div")?.classList.toggle("max-h-16");
-      document.querySelector("#header > div")?.classList.toggle("max-h-96");
-      document.querySelector("#header > div > div")?.classList.toggle("max-h-16");
-      document.querySelector("#header > div > div")?.classList.toggle("max-h-96");
       elem.classList.toggle("expanded");
+      let isExpanded = elem.classList.contains("expanded");
+      onExpansion(isExpanded);
+
+      const navLinks = document.querySelectorAll("#header nav ul li");
+      const actionLinks = document.querySelectorAll("#header nav #action-links a");
+
+      navLinks?.forEach((e, i) => {
+        if (e.classList.contains("slidein-links")) {
+          e.setAttribute("style", `animation-delay: ${100 * (navLinks.length - i - 1)}ms;`);
+          e.classList.remove("slidein-links");
+          e.classList.add("slidein-links-reverse");
+        } else {
+          e.setAttribute("style", `opacity: 0%; animation-delay: ${100 * i}ms;`);
+          e.classList.remove("slidein-links-reverse");
+          e.classList.add("slidein-links");
+        }
+      });
+
+      actionLinks?.forEach((e, i) => {
+        if (e.classList.contains("fadein-links")) {
+          e.setAttribute("style", `animation-delay: ${100 * (actionLinks.length - i - 1)}ms;`);
+          e.classList.remove("fadein-links");
+          e.classList.add("fadein-links-reverse");
+        } else {
+          e.setAttribute(
+            "style",
+            `opacity: 0%; animation-delay: ${100 * (i + navLinks.length - 1)}ms;`
+          );
+          e.classList.remove("fadein-links-reverse");
+          e.classList.add("fadein-links");
+        }
+      });
     });
 
-    attachEvent("[data-aw-toggle-color-scheme]", "click", function () {
-      if (defaultTheme.endsWith(":only")) {
-        return;
-      }
-      document.documentElement.classList.toggle("dark");
-      localStorage.theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
-    });
-
-    attachEvent("[data-aw-social-share]", "click", function (_, elem) {
-      const network = elem.getAttribute("data-aw-social-share");
-      const url = encodeURIComponent(elem.getAttribute("data-aw-url"));
-      const text = encodeURIComponent(elem.getAttribute("data-aw-text"));
-
-      let href;
-      switch (network) {
-        case "facebook":
-          href = `https://www.facebook.com/sharer.php?u=${url}`;
-          break;
-        case "twitter":
-          href = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
-          break;
-        case "linkedin":
-          href = `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${text}`;
-          break;
-        case "whatsapp":
-          href = `https://wa.me/?text=${text}%20${url}`;
-          break;
-        case "mail":
-          href = `mailto:?subject=%22${text}%22&body=${text}%20${url}`;
-          break;
-
-        default:
-          return;
-      }
-
-      const newlink = document.createElement("a");
-      newlink.target = "_blank";
-      newlink.href = href;
-      newlink.click();
-    });
+    // attachEvent("[data-aw-toggle-color-scheme]", "click", function () {
+    //   if (defaultTheme.endsWith(":only")) {
+    //     return;
+    //   }
+    //   document.documentElement.classList.toggle("dark");
+    //   localStorage.theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
+    // });
 
     function appyHeaderStylesOnScroll() {
-      const header = document.getElementById("header");
-      if (lastKnownScrollPosition > 40 && !header.classList.contains("scroll")) {
-        document.getElementById("header").classList.add("scroll");
-      } else if (lastKnownScrollPosition <= 40 && header.classList.contains("scroll")) {
-        document.getElementById("header").classList.remove("scroll");
+      const header = document.querySelector("#header div");
+      if (lastKnownScrollPosition > 40 && !header?.classList.contains("scroll")) {
+        header?.classList.add("scroll");
+      } else if (lastKnownScrollPosition <= 40 && header?.classList.contains("scroll")) {
+        header?.classList.remove("scroll");
       }
       ticking = false;
     }
@@ -121,14 +124,29 @@
     });
   };
 
+  const observer = new IntersectionObserver(
+    (intersections) => {
+      intersections.forEach(({ target, isIntersecting }) => {
+        if (!target.classList.contains("animate-slidein")) {
+          target.classList.toggle("animate-slidein", isIntersecting);
+        }
+      });
+    },
+    {
+      threshold: 0,
+    }
+  );
+
+  document.querySelectorAll(".slidein-intersect").forEach((div) => {
+    observer.observe(div);
+  });
+
   window.onpageshow = function () {
     document.documentElement.classList.add("motion-safe:scroll-smooth");
     const elem = document.querySelector("[data-toggle-nav]");
     if (elem) {
       elem.classList.remove("expanded");
+      onExpansion(false); // we need to run this in rare case nav is still expanded
     }
-    // document.body.classList.remove("overflow-hidden");
-    // document.getElementById("header")?.classList.remove("h-screen");
-    // document.querySelector("#header nav")?.classList.add("hidden");
   };
 </script>
