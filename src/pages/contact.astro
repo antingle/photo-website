@@ -3,9 +3,8 @@ import { Icon } from "astro-icon";
 import { CONTACT } from "~/config";
 import Layout from "~/layouts/BaseLayout.astro";
 import * as SibApiV3Sdk from "@sendinblue/client";
-import { createSignal, Show } from "solid-js";
 
-const [sentMessage, setSentMessage] = createSignal(false);
+let messageSent = false;
 
 if (Astro.request.method === "POST") {
   try {
@@ -13,7 +12,6 @@ if (Astro.request.method === "POST") {
     const name = data.get("name") as string;
     const email = data.get("email") as string;
     const message = data.get("message") as string;
-    // Do something with the data
 
     const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
     const key = import.meta.env.EMAIL_API_KEY || "";
@@ -21,7 +19,7 @@ if (Astro.request.method === "POST") {
 
     let sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
     sendSmtpEmail.templateId = 2;
-    sendSmtpEmail.to = [{ email: "anthony.ingle@icloud.com", name: "Anthony Ingle" }];
+    sendSmtpEmail.to = [{ email: "anthony@anthonyinglephotos.com", name: "Anthony Ingle" }];
     sendSmtpEmail.replyTo = { email: email, name: name };
     sendSmtpEmail.params = {
       NAME: name,
@@ -29,20 +27,20 @@ if (Astro.request.method === "POST") {
       MESSAGE: message,
       DATE: Date.now(),
     };
+
     let result = await apiInstance.sendTransacEmail(sendSmtpEmail);
+
     if (result.response.statusCode == 201) {
-      setSentMessage(true);
+      messageSent = true;
+    } else {
+      throw Error("Something went wrong")
     }
 
-    console.log(name, email, message);
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    }
+    console.error(error);
   }
 }
 ---
-
 <Layout title="Contact">
   <div>
     <main class="m-auto rounded-xl py-8 px-8 sm:px-12 max-w-2xl">
@@ -62,50 +60,64 @@ if (Astro.request.method === "POST") {
           ))
         }
       </div>
-      <hr />
-      <h2 class="text-primary text-xl font-bold my-4">Send a Message</h2>
+      <hr class="mb-4" />
 
-      <Show when={!sentMessage()}>
-        <form method="post">
-          <div class="mb-6">
-            <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
-            <input
-              type="text"
-              id="name"
-              class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 focus:outline-primary"
-              placeholder="Enter your name"
-              required
-            />
-          </div>
-          <div class="mb-6">
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
-            <input
-              type="email"
-              id="email"
-              class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:primary focus:border-primary block w-full p-2.5 focus:outline-primary"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-          <div class="mb-6">
-            <label for="message" class="block mb-2 text-sm font-medium text-gray-900">Message</label
-            >
-            <textarea
-              id="message"
-              class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 focus:outline-primary min-h-[42px]"
-              placeholder="Type your message here"
-              rows="4"
-              required></textarea>
-          </div>
+      {
+        !messageSent ? (
+          <form method="post">
+            <h2 class="text-primary text-2xl font-bold my-4">Send a Message</h2>
+            <div class="mb-6">
+              <label for="name" class="block mb-2 text-sm font-medium text-gray-900">
+                Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 focus:outline-primary"
+                placeholder="Enter your name"
+                required
+              />
+            </div>
+            <div class="mb-6">
+              <label for="email" class="block mb-2 text-sm font-medium text-gray-900">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:primary focus:border-primary block w-full p-2.5 focus:outline-primary"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+            <div class="mb-6">
+              <label for="message" class="block mb-2 text-sm font-medium text-gray-900">
+                Message
+              </label>
+              <textarea
+                name="message"
+                class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 focus:outline-primary min-h-[42px]"
+                placeholder="Type your message here"
+                rows="4"
+                required
+              />
+            </div>
 
-          <button type="submit" class="btn btn-primary font-medium text-sm px-12 w-full group"
-            >{sentMessage() ? "Thank You!" : "Send"}<Icon
-              class="w-4 h-4 ml-2 group-hover:-rotate-45 transition-all"
-              name="mdi:send"
-            /></button
-          >
-        </form>
-      </Show>
+            <button type="submit" class="btn btn-primary font-medium text-sm px-12 w-full group">
+              Send
+              <Icon class="w-4 h-4 ml-2 group-hover:-rotate-45 transition-all" name="mdi:send" />
+            </button>
+          </form>
+        ) : (
+          <div>
+            <Icon class="w-10 h-10 text-green-600" name="simple-line-icons:check" />
+              <p class="font-bold text-2xl my-4">
+                Thank you for reaching out!
+              </p>
+              <p>I will get back to you as soon as possible.</p>
+          </div>
+        )
+      }
     </main>
   </div>
 </Layout>
