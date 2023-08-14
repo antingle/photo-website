@@ -3,11 +3,13 @@ import { fileURLToPath } from "url";
 import { defineConfig } from "astro/config";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// https://astro.build/config
 import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 import solidJs from "@astrojs/solid-js";
+
+// https://astro.build/config
+import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,6 +17,8 @@ export default defineConfig({
   experimental: {
     assets: true,
   },
+  adapter: vercel({ imageService: true, analytics: true }),
+  output: "server",
   vite: {
     resolve: {
       alias: {

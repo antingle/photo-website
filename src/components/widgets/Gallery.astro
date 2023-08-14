@@ -1,7 +1,7 @@
 ---
-import Image from "astro/components/Image.astro";
 import { generateSrcset } from "~/utils/images";
 import type { IKImage } from "~/types/api";
+import "lazysizes";
 
 const key = import.meta.env.IK_PRIVATE_KEY || "";
 // fetch imagekit photos from portfolio folder
@@ -62,7 +62,7 @@ for (let i = 1.0; i < 3.5; i += 0.5) {
     data?.map((photo) => {
       return (
         <div class="bg-light-secondary slidein-intersect">
-          <Image
+          <img
             class="lazyload blurred"
             src={`${photo.url}?tr=w-${mConfig.columnSize},q-30`}
             data-sizes={sizes}
