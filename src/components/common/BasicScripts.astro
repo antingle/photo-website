@@ -19,7 +19,19 @@
       document.querySelector("#header > div")?.classList.remove("max-h-96");
       document.querySelector("#header > div > div")?.classList.remove("max-h-96");
 
-      timeoutId = setTimeout(() => navHeader?.classList.add("hidden"), 500);
+      timeoutId = setTimeout(() => {
+        navHeader?.classList.add("hidden");
+
+        // extra below is when changing from mobile to desktop, links would otherwise be gone
+        const navLinks = document.querySelectorAll("#header nav ul li");
+        const actionLinks = document.querySelectorAll("#header nav #action-links a");
+        navLinks?.forEach((e) => {
+          e.classList.remove("slidein-links-reverse");
+        });
+        actionLinks?.forEach((e) => {
+          e.classList.remove("fadein-links-reverse");
+        });
+      }, 500);
     }
   }
   // function applyTheme(theme) {

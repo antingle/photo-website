@@ -2,6 +2,45 @@
 import { Icon } from "astro-icon";
 import { CONTACT } from "~/config";
 import Layout from "~/layouts/BaseLayout.astro";
+import * as SibApiV3Sdk from "@sendinblue/client";
+import { createSignal, Show } from "solid-js";
+
+const [sentMessage, setSentMessage] = createSignal(false);
+
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const name = data.get("name") as string;
+    const email = data.get("email") as string;
+    const message = data.get("message") as string;
+    // Do something with the data
+
+    const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+    const key = import.meta.env.EMAIL_API_KEY || "";
+    apiInstance.setApiKey(SibApiV3Sdk.TransactionalEmailsApiApiKeys.apiKey, key);
+
+    let sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+    sendSmtpEmail.templateId = 2;
+    sendSmtpEmail.to = [{ email: "anthony.ingle@icloud.com", name: "Anthony Ingle" }];
+    sendSmtpEmail.replyTo = { email: email, name: name };
+    sendSmtpEmail.params = {
+      NAME: name,
+      EMAIL: email,
+      MESSAGE: message,
+      DATE: Date.now(),
+    };
+    let result = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    if (result.response.statusCode == 201) {
+      setSentMessage(true);
+    }
+
+    console.log(name, email, message);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
 ---
 
 <Layout title="Contact">
@@ -26,41 +65,47 @@ import Layout from "~/layouts/BaseLayout.astro";
       <hr />
       <h2 class="text-primary text-xl font-bold my-4">Send a Message</h2>
 
-      <form>
-        <div class="mb-6">
-          <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
-          <input
-            type="text"
-            id="name"
-            class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 focus:outline-primary"
-            placeholder="Enter your name"
-            required
-          />
-        </div>
-        <div class="mb-6">
-          <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
-          <input
-            type="email"
-            id="email"
-            class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:primary focus:border-primary block w-full p-2.5 focus:outline-primary"
-            placeholder="Enter your email"
-            required
-          />
-        </div>
-        <div class="mb-6">
-          <label for="message" class="block mb-2 text-sm font-medium text-gray-900">Message</label>
-          <textarea
-            id="message"
-            class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 focus:outline-primary min-h-[42px]"
-            placeholder="Type your message here"
-            rows="4"
-            required></textarea>
-        </div>
+      <Show when={!sentMessage()}>
+        <form method="post">
+          <div class="mb-6">
+            <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
+            <input
+              type="text"
+              id="name"
+              class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 focus:outline-primary"
+              placeholder="Enter your name"
+              required
+            />
+          </div>
+          <div class="mb-6">
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+            <input
+              type="email"
+              id="email"
+              class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:primary focus:border-primary block w-full p-2.5 focus:outline-primary"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div class="mb-6">
+            <label for="message" class="block mb-2 text-sm font-medium text-gray-900">Message</label
+            >
+            <textarea
+              id="message"
+              class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 focus:outline-primary min-h-[42px]"
+              placeholder="Type your message here"
+              rows="4"
+              required></textarea>
+          </div>
 
-        <button type="submit" class="btn btn-primary font-medium text-sm px-12 w-full"
-          >Submit</button
-        >
-      </form>
+          <button type="submit" class="btn btn-primary font-medium text-sm px-12 w-full group"
+            >{sentMessage() ? "Thank You!" : "Send"}<Icon
+              class="w-4 h-4 ml-2 group-hover:-rotate-45 transition-all"
+              name="mdi:send"
+            /></button
+          >
+        </form>
+      </Show>
     </main>
   </div>
 </Layout>

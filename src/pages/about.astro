@@ -1,5 +1,4 @@
 ---
-import Image from "astro/components/Image.astro";
 import Layout from "~/layouts/BaseLayout.astro";
 import { generateSrcset } from "~/utils/images";
 const sizes = [384, 768, 1152];
@@ -8,7 +7,7 @@ const sizes = [384, 768, 1152];
 <Layout title={"About"}>
   <main class="flex flex-wrap justify-center items-center gap-4 mx-4 mb-12">
     <article class="w-96 rounded-xl overflow-hidden bg-light-secondary shadow-lg animate-slidein">
-      <Image
+      <img
         src="https://ik.imagekit.io/anthonyinglephoto/anthony"
         alt="Anthony Ingle"
         sizes="(max-width: 416px) 93vw, 384px"
