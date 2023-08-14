@@ -6,6 +6,7 @@ import Footer from "~/components/widgets/Footer.astro";
 import Header from "~/components/widgets/Header.astro";
 import { ACTIONS, LINKS, NAME, SOCIAL, DESCRIPTION } from "~/config";
 import {SEO} from "astro-seo"
+import type { Link } from "~/types/links";
 
 export interface Props {
   title: string;
@@ -68,7 +69,7 @@ const { title, description } = Astro.props;
 
     <slot />
 
-    <slot name="footer"><Footer links={LINKS} social={SOCIAL} /></slot>
+    <slot name="footer"><Footer links={[...LINKS as Link[], ...ACTIONS as Link[]]} social={SOCIAL} /></slot>
     <BasicScripts />
   </body>
 </html>

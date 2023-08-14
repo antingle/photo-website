@@ -1,11 +1,11 @@
 ---
 import Logo from "~/components/common/Logo.astro";
-import type { MenuLink, SocialLink } from "~/types/links";
+import type { Link, SocialLink } from "~/types/links";
 import { NAME } from "~/config";
 import { Icon } from "astro-icon";
 
 export interface Props {
-  links?: Array<MenuLink>;
+  links?: Array<Link>;
   social: Array<SocialLink>;
 }
 
