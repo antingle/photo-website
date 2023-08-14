@@ -5,6 +5,7 @@ import CustomStyles from "~/components/common/CustomStyles.astro";
 import Footer from "~/components/widgets/Footer.astro";
 import Header from "~/components/widgets/Header.astro";
 import { ACTIONS, LINKS, NAME, SOCIAL, DESCRIPTION } from "~/config";
+import {SEO} from "astro-seo"
 
 export interface Props {
   title: string;
@@ -34,8 +35,30 @@ const { title, description } = Astro.props;
     <meta name="msapplication-TileColor" content="#000000" />
     <meta name="theme-color" content="#ffffff" />
 
-    <title>{NAME} | {title}</title>
-    <meta name="description" content={description || DESCRIPTION} />
+    <SEO 
+    title={`${NAME} | ${title}`}
+    description={description || DESCRIPTION}
+    openGraph={{
+      basic: {
+        title: `${NAME} | ${title}`,
+        type: "website",
+        image: "https://anthonyinglephotos.com/logo.svg",
+      }
+    }}
+    twitter={{
+      creator: "@ingleant"
+    }}
+    extend={{
+      // extending the default meta tags
+      meta: [
+        {
+          name: "twitter:image",
+          content: "https://anthonyinglephotos.com/logo.svg",
+        },
+        { name: "twitter:title", content: NAME},
+        { name: "twitter:description", content: DESCRIPTION },
+      ],
+    }} />
     <CustomStyles />
   </head>
   <body>
