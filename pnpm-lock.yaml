@@ -23,6 +23,9 @@ dependencies:
   astro-icon:
     specifier: ^0.8.1
     version: 0.8.1
+  astro-seo:
+    specifier: ^0.7.5
+    version: 0.7.5
   lazysizes:
     specifier: ^5.3.2
     version: 5.3.2
@@ -1425,6 +1428,10 @@ packages:
       node-fetch: 3.3.2
       resolve-pkg: 2.0.0
       svgo: 2.8.0
+    dev: false
+
+  /astro-seo@0.7.5:
+    resolution: {integrity: sha512-bo5PiB4Y30PP9QS6OnYcVOr1fKDE52mvJys/3HgeiM2h+/hS7jESUHZMx6VX7yRid1yMGHsp2OyVTA9DrdPyPg==}
     dev: false
 
   /astro@2.10.7:
