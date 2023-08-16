@@ -1,0 +1,58 @@
+---
+import Image from "astro/components/Image.astro";
+import { generateSrcset } from "~/utils/images";
+import BodyList from "../solid/BodyList";
+export interface Props {
+  title: string;
+  price: string;
+  list: string[];
+  imageSrc: string;
+  imageAlt: string;
+  imageClass?: string;
+  dataCalLink: string;
+  index?: number;
+}
+
+const {
+  title,
+  price,
+  list,
+  imageSrc,
+  imageAlt,
+  imageClass = "",
+  dataCalLink,
+  index = 0,
+} = Astro.props;
+const sizes = [384, 768, 1152];
+---
+
+<article
+  class="flex flex-col items-center justify-start sm:flex-row md:items-start border-2 rounded-2xl w-full animate-slidein gap-4 p-4 opacity-0"
+  style={`animation-delay:${200 * index + 100}ms`}
+>
+  <Image
+    src={imageSrc}
+    alt={imageAlt}
+    class:list={["h-64 sm:w-max object-cover rounded-xl", imageClass]}
+    sizes="(max-width: 640px) 93vw, 571px"
+    srcset={generateSrcset(sizes, imageSrc)}
+    height={2700}
+    width={1800}
+    loading={"eager"}
+  />
+
+  <div class="flex flex-col h-full w-full justify-between sm:min-h-[16rem]">
+    <div>
+      <h2 class="text-2xl font-semibold">{title}</h2>
+      <h2 class="text-xl font-semibold text-gray-700">{price}</h2>
+    </div>
+    <BodyList class="font-light list-disc pl-5 mb-4" list={list} />
+    <button
+      class="btn btn-primary flex"
+      data-cal-link={dataCalLink}
+      data-cal-config='{"layout":"month_view"}'
+    >
+      Book
+    </button>
+  </div>
+</article>

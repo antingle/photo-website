@@ -1,29 +1,101 @@
 ---
 import Layout from "~/layouts/BaseLayout.astro";
+import SessionCard from "../components/widgets/SessionCard.astro";
 ---
 
 <Layout title={"Book"}>
   <main class="mb-12 max-w-4xl mx-auto w-full px-4">
-    <h1 class="text-gray-900 text-3xl md:text-4xl mb-8 font-extrabold w-full">Book a Photo Session</h1>
-    
+    <h1 class="text-gray-900 text-3xl md:text-4xl mb-8 font-extrabold w-full">Book a Session</h1>
 
-      <div class="w-full">
-        <!-- Cal inline embed code begins -->
-        <div style="width:100%;height:100%;ov2erflow:scroll" id="my-cal-inline"></div>
-        <script type="text/javascript">
-          (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; typeof namespace === "string" ? (cal.ns[namespace] = api) && p(api, ar) : p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
-        Cal("init", {origin:"https://cal.com"});
+    <div class="flex flex-col gap-4">
+      <SessionCard
+        title="Professional Headshots"
+        price="$75"
+        list={["15 minute session", "1 person", "About 5 edited photos"]}
+        imageSrc="https://ik.imagekit.io/anthonyinglephoto/portfolio/DSC03880_wtHltAMHv.jpg"
+        imageAlt="Professional headshot photo in the arch with a green background"
+        imageClass="object-top"
+        dataCalLink="anthonyinglephotos/professional-headshots"
+        index={0}
+      />
 
-          Cal("inline", {
-          elementOrSelector:"#my-cal-inline",
-          calLink: "anthonyinglephotos/grad-photo-session",
-          layout: "month_view"
-          });
-          
-          Cal("ui", {"styles":{"branding":{"brandColor":"#ffffff"}},"hideEventTypeDetails":false,"layout":"month_view"});
-          </script>
-          <!-- Cal inline embed code ends -->
-      </div>
-    
+      <SessionCard
+        title="Graduation Photos"
+        price="$250"
+        list={[
+          "1 hour session",
+          "1 person",
+          "Up to 2 locations",
+          "About 50 edited photos",
+          "Additional $25 for any group shots with guests",
+        ]}
+        imageSrc="https://ik.imagekit.io/anthonyinglephoto/portfolio/DSC03036_vesOXZ2Fez.jpg"
+        imageAlt="Graduation photo in the arch in front of Westcott Fountain"
+        dataCalLink="anthonyinglephotos/graduation-photos"
+        index={1}
+      />
+
+      <SessionCard
+        title="Couple Graduation"
+        price="$400"
+        list={[
+          "1 hour and 30 minute session",
+          "2 people",
+          "Up to 2 locations",
+          "About 100 edited photos total, both together or single",
+          "Additional $25 for any group shots with guests",
+        ]}
+        imageSrc="https://ik.imagekit.io/anthonyinglephoto/portfolio/DSC03679_Wao51yyQ5d.jpg"
+        imageAlt="Couple graduation photo in front of the FSU stadium"
+        dataCalLink="anthonyinglephotos/couple-graduation"
+        index={2}
+      />
+    </div>
+
+    <!-- Cal element-click embed code begins -->
+    <script type="text/javascript">
+      (function (C, A, L) {
+        let p = function (a, ar) {
+          a.q.push(ar);
+        };
+        let d = C.document;
+        C.Cal =
+          C.Cal ||
+          function () {
+            let cal = C.Cal;
+            let ar = arguments;
+            if (!cal.loaded) {
+              cal.ns = {};
+              cal.q = cal.q || [];
+              d.head.appendChild(d.createElement("script")).src = A;
+              cal.loaded = true;
+            }
+            if (ar[0] === L) {
+              const api = function () {
+                p(api, arguments);
+              };
+              const namespace = ar[1];
+              api.q = api.q || [];
+              typeof namespace === "string" ? (cal.ns[namespace] = api) && p(api, ar) : p(cal, ar);
+              return;
+            }
+            p(cal, ar);
+          };
+      })(window, "https://app.cal.com/embed/embed.js", "init");
+      Cal("init", { origin: "https://cal.com" }); // eslint-disable-line
+
+      // Important: Please add following attributes to the element you want to open Cal on click
+      // `data-cal-link="anthonyinglephotos/grad-photo-session"`
+      // `data-cal-config='{"layout":"month_view"}'`
+
+      // eslint-disable-next-line
+      Cal("ui", {
+        theme: "light",
+        styles: { branding: { brandColor: "#111827" } },
+        hideEventTypeDetails: false,
+        layout: "month_view",
+      });
+    </script>
+    <!-- Cal element-click embed code ends -->
   </main>
 </Layout>
