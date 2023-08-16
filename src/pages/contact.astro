@@ -9,6 +9,16 @@ let messageSent = false;
 if (Astro.request.method === "POST") {
   try {
     const data = await Astro.request.formData();
+    
+    const botText = data.get("text");
+
+    // if the "text" field is filled out, this is a bot
+    // since the field is hidden
+    if (botText != "") {
+      console.log("you are a bot get out of here")
+      return Astro.redirect("/youareabot") // send bots to the void
+    }
+
     const name = data.get("name") as string;
     const email = data.get("email") as string;
     const message = data.get("message") as string;
@@ -40,6 +50,10 @@ if (Astro.request.method === "POST") {
     console.error(error);
   }
 }
+
+// The "text" div below is used to prevent bots from spamming the form. 
+// They hopefully fill out the text field when is hidden for normal users.
+
 ---
 <Layout title="Contact">
   <div>
@@ -88,6 +102,18 @@ if (Astro.request.method === "POST") {
                 class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:primary focus:border-primary block w-full p-2.5 focus:outline-primary"
                 placeholder="Enter your email"
                 required
+              />
+            </div>
+            <div class="hidden" aria-hidden>
+              <label for="text" class="hidden" aria-hidden>
+                Text
+              </label>
+              <input
+                type="text"
+                name="text"
+                class="hidden"
+                placeholder="Enter text"
+                aria-hidden
               />
             </div>
             <div class="mb-6">
