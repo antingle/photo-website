@@ -6,20 +6,25 @@ import * as SibApiV3Sdk from "@sendinblue/client";
 import { verifyCaptcha } from "~/utils/captcha";
 
 let messageSent = false;
+let submissionError = false;
 
 if (Astro.request.method === "POST") {
   try {
     const data = await Astro.request.formData();
     const token = data.get("g-recaptcha-response")?.toString() || "";
+
+    if (token == "") {
+      throw Error("No token");
+    }
+
     const captchaResult = await verifyCaptcha(token);
 
-    if (captchaResult.errorCodes.length != undefined && captchaResult.errorCodes.length > 0) {
+    if (captchaResult.errorCodes != undefined && captchaResult.errorCodes?.length > 0) {
       // check for error codes
-      console.log("captcha error");
       throw Error(captchaResult.errorCodes.join(","));
     } else if (captchaResult.success == false) {
-      console.log("you are a bot get out of here");
-      return Astro.redirect("/youareabot"); // send bots to the void
+      submissionError = true;
+      throw Error("reCAPTCHA invalid");
     }
 
     const name = data.get("name") as string;
@@ -49,6 +54,7 @@ if (Astro.request.method === "POST") {
       throw Error("Something went wrong");
     }
   } catch (error) {
+    submissionError = true;
     console.error(error);
   }
 }
@@ -58,6 +64,12 @@ if (Astro.request.method === "POST") {
 ---
 
 <Layout title="Contact">
+  <script type="text/javascript">
+    // eslint-disable-next-line no-unused-vars
+    function recaptchaCallback() {
+      document.getElementById("recaptcha_check_empty").value = 1;
+    }
+  </script>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <div>
     <main class="m-auto rounded-xl py-8 px-8 sm:px-12 max-w-2xl">
@@ -125,12 +137,30 @@ if (Astro.request.method === "POST") {
                 required
               />
             </div>
-            <div class="g-recaptcha mb-6" data-sitekey={import.meta.env.RECAPTCHA_SITE_KEY}></div>
+            <div class="relative">
+              <div
+                class="g-recaptcha mb-6"
+                data-callback="recaptchaCallback"
+                data-sitekey={import.meta.env.RECAPTCHA_SITE_KEY}
+              />
+              <input
+                id="recaptcha_check_empty"
+                required
+                tabindex="-1"
+                style="width:50px; opacity:0; pointer-events:none; position:absolute;top:0; bottom:0;"
+                oninvalid="this.setCustomValidity('Please fill out the reCAPTCHA')"
+              />
+            </div>
 
             <button type="submit" class="btn btn-primary font-medium text-sm px-12 w-full group">
               Send
               <Icon class="w-4 h-4 ml-2 group-hover:-rotate-45 transition-all" name="mdi:send" />
             </button>
+            {submissionError && (
+              <p class="text-red-500 text-sm mt-2">
+                I'm sorry, something went wrong. Please try again.
+              </p>
+            )}
           </form>
         ) : (
           <div>
