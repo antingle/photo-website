@@ -3,18 +3,21 @@ import { Icon } from "astro-icon";
 import { CONTACT } from "~/config";
 import Layout from "~/layouts/BaseLayout.astro";
 import * as SibApiV3Sdk from "@sendinblue/client";
+import { verifyCaptcha } from "~/utils/captcha";
 
 let messageSent = false;
 
 if (Astro.request.method === "POST") {
   try {
     const data = await Astro.request.formData();
+    const token = data.get("g-recaptcha-response")?.toString() || "";
+    const captchaResult = await verifyCaptcha(token);
 
-    const botText = data.get("text");
-
-    // if the "text" field is filled out, this is a bot
-    // since the field is hidden
-    if (botText != "") {
+    if (captchaResult.errorCodes.length != undefined && captchaResult.errorCodes.length > 0) {
+      // check for error codes
+      console.log("captcha error");
+      throw Error(captchaResult.errorCodes.join(","));
+    } else if (captchaResult.success == false) {
       console.log("you are a bot get out of here");
       return Astro.redirect("/youareabot"); // send bots to the void
     }
@@ -55,6 +58,7 @@ if (Astro.request.method === "POST") {
 ---
 
 <Layout title="Contact">
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <div>
     <main class="m-auto rounded-xl py-8 px-8 sm:px-12 max-w-2xl">
       <h1 class="text-primary text-4xl font-bold mb-8">Contact Me</h1>
@@ -121,6 +125,7 @@ if (Astro.request.method === "POST") {
                 required
               />
             </div>
+            <div class="g-recaptcha mb-6" data-sitekey={import.meta.env.RECAPTCHA_SITE_KEY}></div>
 
             <button type="submit" class="btn btn-primary font-medium text-sm px-12 w-full group">
               Send
