@@ -17,7 +17,7 @@ export default defineConfig({
   experimental: {
     assets: true,
   },
-  adapter: vercel({ imageService: true, analytics: true }),
+  adapter: vercel({ imageService: true, speedInsights: { enabled: true }}),
   output: "server",
   vite: {
     resolve: {
