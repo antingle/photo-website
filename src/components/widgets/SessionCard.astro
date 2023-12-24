@@ -1,5 +1,4 @@
 ---
-import Image from "astro/components/Image.astro";
 import { generateSrcset } from "~/utils/images";
 import BodyList from "../solid/BodyList";
 export interface Props {
@@ -30,7 +29,7 @@ const sizes = [384, 768, 1152];
   class="flex flex-col items-center justify-start sm:flex-row md:items-start border-2 rounded-2xl w-full animate-slidein gap-4 p-4 opacity-0"
   style={`animation-delay:${200 * index + 100}ms`}
 >
-  <Image
+  <img
     src={imageSrc}
     alt={imageAlt}
     class:list={["h-64 sm:w-max object-cover rounded-xl", imageClass]}
