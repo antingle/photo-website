@@ -1,0 +1,31 @@
+---
+export interface Props {
+  values: string[];
+  selected: string;
+}
+
+const { values, selected } = Astro.props;
+---
+
+<ul
+  class="flex flex-wrap font-normal text-sm text-center text-slate-800 justify-center m-auto mb-4 mt-4 rounded-2xl bg-gray-100 shadow-lg flex-col sm:flex-row w-full sm:w-fit border-slate-500 border overflow-hidden"
+>
+  {
+    values.map((value) => (
+      <li>
+        <a
+          href={`/gallery/${value}`}
+          aria-current="page"
+          class:list={[
+            "inline-block w-full pt-4 pb-4 sm:w-36 rounded-xl active:text-white active:bg-slate-700 transition duration-150",
+            selected == value
+              ? "text-white bg-primary shadow-lg hover:bg-slate-800"
+              : "bg-none hover:bg-gray-200",
+          ]}
+        >
+          {value.charAt(0).toUpperCase() + value.slice(1)}
+        </a>
+      </li>
+    ))
+  }
+</ul>

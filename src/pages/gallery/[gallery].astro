@@ -1,15 +1,28 @@
 ---
 import Layout from "~/layouts/BaseLayout.astro";
 import Gallery from "~/components/widgets/Gallery.astro";
+import NavTabs from "~/components/common/NavTabs.astro";
+
+const { gallery } = Astro.params;
+let galleries = ["graduation", "portraits", "family"];
+
+// if not a valid gallery, redirect to first
+if (galleries.findIndex((g) => g == gallery) == -1) {
+  return Astro.redirect(`/gallery/${galleries[0]}`);
+}
 ---
 
 <Layout title="Gallery">
+  <div class="flex flex-col w-full max-w-3xl mx-auto px-4">
+    <NavTabs values={galleries} selected={gallery} />
+  </div>
+
   <Gallery />
 
-  <main
+  <div
     class="text-center my-16 bg-gray-900 from-slate-700 bg-gradient-to-tr px-4 py-16 mx-4 rounded-2xl shadow-xl"
   >
     <h1 class="text-3xl font-bold mb-8 text-white sa">Ready For a Photo Session?</h1>
     <a class="btn btn-inverted cursor-pointer w-full max-w-xs" href="/book">Book a Session Now</a>
-  </main>
+  </div>
 </Layout>

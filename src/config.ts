@@ -1,6 +1,6 @@
 import type { ActionLink, MenuLink, SocialLink } from "~/types/links";
 const LINKS: MenuLink[] = [
-  { text: "Gallery", href: "/" },
+  { text: "Gallery", href: "/gallery/graduation" },
   { text: "About", href: "/about" },
   { text: "Contact", href: "/contact" },
 ];
@@ -63,7 +63,7 @@ const CONTACT: SocialLink[] = [
     icon: "ic:round-mail-outline",
     ariaLabel: "Email",
     href: "mailto:anthony@anthonyinglephotos.com",
-    customClasses: ["hover:text-teal-800"],
+    customClasses: ["hover:text-cyan-500"],
   },
 ];
 

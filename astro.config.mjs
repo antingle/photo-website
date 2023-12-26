@@ -23,4 +23,8 @@ export default defineConfig({
       },
     },
   },
+  redirects: {
+    "/" : "/gallery/graduation",
+    "/gallery" : "gallery/graduation"
+  }
 });

@@ -1,11 +1,12 @@
 ---
 import { generateSrcset } from "~/utils/images";
 import type { IKImage } from "~/types/api";
-import "lazysizes";
+
+const { gallery: selectedGallery } = Astro.params; // grab gallery string from url
 
 const key = import.meta.env.IK_PRIVATE_KEY || "";
 // fetch imagekit photos from portfolio folder
-const res = await fetch("https://api.imagekit.io/v1/files?path=portfolio", {
+const res = await fetch(`https://api.imagekit.io/v1/files?path=portfolio/${selectedGallery}`, {
   method: "GET",
   headers: {
     Authorization: `Basic ${btoa(key + ":")}`,
@@ -13,12 +14,13 @@ const res = await fetch("https://api.imagekit.io/v1/files?path=portfolio", {
   },
 });
 const data: IKImage[] = await res.json();
+data.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)); // sort by date created descending
 
 const mConfig = {
   numCols: 4,
   columnGap: 16,
   containerPadding: 32,
-  columnSize: 240,
+  columnSize: 280,
 };
 
 let sizes = "";
@@ -27,7 +29,7 @@ let srcsetSizes: number[] = [maxImageWidth];
 
 /*
 calculating big brain srcset sizes
-max-width: 32 + 240 + (16 + 240) * {col_num - 1} - 1
+max-width: 32 + 280 + (16 + 280) * {col_num - 1} - 1
 image-width: {max_width - 32 - 16 * {col_num - 2}} / {col_num - 1}
 viewport-width: {{image-width} / {max_width}} * 100
 */
@@ -57,20 +59,22 @@ for (let i = 1.0; i < 3.5; i += 0.5) {
 }
 ---
 
-<div class="masonry-with-columns">
+<div class="grid" transition:animate="fade">
   {
     data?.map((photo) => {
       return (
-        <div class="bg-light-secondary slidein-intersect">
-          <img
-            class="lazyload blurred"
-            src={`${photo.url}?tr=w-${mConfig.columnSize},q-30`}
-            data-sizes={sizes}
-            data-srcset={generateSrcset(srcsetSizes, photo.url)}
-            alt={photo.name}
-            width={photo.width}
-            height={photo.height}
-          />
+        <div class="grid-item">
+          <div class="bg-light-secondary slidein-intersect">
+            <img
+              class="lazyload blurred"
+              src={`${photo.url}?tr=w-${mConfig.columnSize},q-30`}
+              data-sizes={sizes}
+              data-srcset={generateSrcset(srcsetSizes, photo.url)}
+              alt={photo.name}
+              width={photo.width}
+              height={photo.height}
+            />
+          </div>
         </div>
       );
     })
@@ -100,7 +104,32 @@ for (let i = 1.0; i < 3.5; i += 0.5) {
   .blurred.lazyloaded {
     filter: blur(0px);
   }
+
+  .grid {
+    width: 100%;
+    position: relative;
+  }
+
+  .grid-item {
+    position: absolute;
+  }
 </style>
 <script>
   import "lazysizes";
+  import MiniMasonry, { type MiniMasonryOptions } from "minimasonry";
+
+  // create masonry layout
+  let masonryOptions: MiniMasonryOptions = {
+    container: ".grid",
+    baseWidth: 280,
+    gutter: 16,
+    ultimateGutter: 16,
+  };
+  var masonry = new MiniMasonry(masonryOptions);
+
+  document.addEventListener("astro:page-load", () => {
+    masonry.destroy();
+    masonry = new MiniMasonry(masonryOptions);
+    masonry.layout();
+  });
 </script>

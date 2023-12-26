@@ -2,8 +2,8 @@
 
 ---
 
-<script is:inline>
-  let timeoutId = 0;
+<script>
+  let timeoutId: number = 0;
   function onExpansion(isExpanded) {
     const navHeader = document.querySelector("#header nav");
     if (isExpanded) {
@@ -20,7 +20,7 @@
       document.querySelector("#header > div")?.classList.remove("max-h-96");
       document.querySelector("#header > div > div")?.classList.remove("max-h-96");
 
-      timeoutId = setTimeout(() => {
+      timeoutId = window.setTimeout(() => {
         navHeader?.classList.add("hidden");
 
         // extra below is when changing from mobile to desktop, links would otherwise be gone
@@ -66,7 +66,26 @@
     }
   }
 
-  window.onload = function () {
+  const observer = new IntersectionObserver(
+    (intersections) => {
+      intersections.forEach(({ target, isIntersecting }) => {
+        if (!target.classList.contains("animate-slidein")) {
+          target.classList.toggle("animate-slidein", isIntersecting);
+        }
+      });
+    },
+    {
+      threshold: 0,
+    }
+  );
+
+  document.addEventListener("astro:before-swap", () => {
+    document.querySelectorAll(".slidein-intersect").forEach((div) => {
+      observer.unobserve(div);
+    });
+  });
+
+  document.addEventListener("astro:page-load", () => {
     let lastKnownScrollPosition = window.scrollY;
     let ticking = true;
 
@@ -135,23 +154,10 @@
         ticking = true;
       }
     });
-  };
 
-  const observer = new IntersectionObserver(
-    (intersections) => {
-      intersections.forEach(({ target, isIntersecting }) => {
-        if (!target.classList.contains("animate-slidein")) {
-          target.classList.toggle("animate-slidein", isIntersecting);
-        }
-      });
-    },
-    {
-      threshold: 0,
-    }
-  );
-
-  document.querySelectorAll(".slidein-intersect").forEach((div) => {
-    observer.observe(div);
+    document.querySelectorAll(".slidein-intersect").forEach((div) => {
+      observer.observe(div);
+    });
   });
 
   window.onpageshow = function () {
