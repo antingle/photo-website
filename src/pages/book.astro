@@ -1,6 +1,7 @@
 ---
 import Layout from "~/layouts/BaseLayout.astro";
 import SessionCard from "../components/widgets/SessionCard.astro";
+import { generateSrcset } from "~/utils/images";
 ---
 
 <Layout title={"Book"}>
@@ -50,6 +51,36 @@ import SessionCard from "../components/widgets/SessionCard.astro";
         dataCalLink="anthonyinglephotos/couple-graduation"
         index={2}
       />
+
+      <article
+        class="flex flex-col items-center justify-start sm:flex-row md:items-start border-2 rounded-2xl w-full animate-slidein gap-4 p-4 opacity-0"
+        style={`animation-delay:${200 * 3 + 100}ms`}
+      >
+        <img
+          src={"https://ik.imagekit.io/anthonyinglephoto/portfolio/graduation/Copy_of_DSC02666_VIIUdj8vh.jpeg"}
+          alt={"Group of three graduation photo"}
+          class:list={"h-64 sm:w-max sm:h-48 object-cover rounded-xl"}
+          sizes="(max-width: 640px) 93vw, 571px"
+          srcset={generateSrcset(
+            [384, 768, 1152],
+            "https://ik.imagekit.io/anthonyinglephoto/portfolio/graduation/Copy_of_DSC02666_VIIUdj8vh.jpeg"
+          )}
+          height={1800}
+          width={2700}
+          loading={"eager"}
+        />
+
+        <div class="flex flex-col h-full w-full justify-between sm:min-h-[12rem]">
+          <div>
+            <h2 class="text-2xl font-semibold mb-4">Need a Custom Package?</h2>
+            <p class="font-light mb-4">
+              Reach out to me however is easiest for you, and I would be more than happy to discuss
+              what you're looking for!
+            </p>
+          </div>
+          <a href="/contact" class="btn btn-ghost flex"> Contact Me</a>
+        </div>
+      </article>
     </div>
 
     <!-- Cal element-click embed code begins -->
