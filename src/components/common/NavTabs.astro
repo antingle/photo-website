@@ -8,19 +8,19 @@ const { values, selected } = Astro.props;
 ---
 
 <ul
-  class="flex flex-wrap font-normal text-sm text-center text-slate-800 justify-center m-auto mb-4 mt-4 rounded-2xl bg-gray-100 shadow-lg flex-col sm:flex-row w-full sm:w-fit border-slate-500 border overflow-hidden"
+  class="flex flex-wrap font-normal text-sm text-center text-slate-800 justify-center m-auto mb-4 mt-4 rounded-2xl shadow-lg flex-col sm:flex-row w-full sm:w-fit border-slate-500 border overflow-hidden nav-tabs gap-[1px]"
 >
   {
     values.map((value) => (
-      <li>
+      <li class="relative">
         <a
           href={`/gallery/${value}`}
           aria-current="page"
           class:list={[
-            "inline-block w-full pt-4 pb-4 sm:w-36 rounded-xl active:text-white active:bg-slate-700 transition duration-150",
+            "inline-block w-full pt-4 pb-4 sm:w-36 rounded-xl transition duration-150",
             selected == value
-              ? "text-white bg-primary shadow-lg hover:bg-slate-800"
-              : "bg-none hover:bg-gray-200",
+              ? "text-white bg-primary shadow-lg hover:bg-slate-800 active:bg-gray-700"
+              : "bg-none hover:bg-gray-100 active:bg-gray-200",
           ]}
         >
           {value.charAt(0).toUpperCase() + value.slice(1)}
@@ -29,3 +29,26 @@ const { values, selected } = Astro.props;
     ))
   }
 </ul>
+<style>
+  /* For Mobile */
+  .nav-tabs > li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    right: 4%;
+    width: 92%;
+    height: 1px;
+    background-color: #cbd5e1;
+  }
+  @media (min-width: 640px) {
+    .nav-tabs > li:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: 25%;
+      width: 1px;
+      height: 50%;
+      background-color: #cbd5e1;
+    }
+  }
+</style>

@@ -48,15 +48,17 @@ const currentPath = Astro.url.pathname; // use to highlight current path link
         aria-label="Main navigation"
       >
         <ul
-          class="flex flex-col md:gap-2 pt-4 pb-3 md:pb-0 md:pt-0 md:flex-row md:self-center w-full md:w-auto text-xl md:text-base md:flex-1 md:justify-center"
+          class="flex flex-col gap-1 md:gap-2 pt-4 pb-3 md:pb-0 md:pt-0 md:flex-row md:self-center w-full md:w-auto text-xl md:text-base md:flex-1 md:justify-center"
         >
           {
             links.map(({ text, href }) => (
               <li>
                 <a
                   class:list={[
-                    "font-light hover:bg-gray-100 hover:shadow-md rounded-2xl px-8 py-3 flex items-center justify-center transition duration-150 ease-in-out",
-                    currentPath.split("/")[1] == href.split("/")[1] ? "bg-slate-100 shadow-lg" : "",
+                    "font-light hover:bg-white/80 hover:outline hover:outline-2 hover:shadow-md outline-gray-300 active:outline-gray-600 rounded-2xl px-8 py-3 flex items-center justify-center transition duration-150 ease-in-out",
+                    currentPath.split("/")[1] == href.split("/")[1]
+                      ? "outline outline-2 outline-gray-800 bg-white/80 shadow-md"
+                      : "",
                   ]}
                   href={href}
                 >

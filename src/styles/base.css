@@ -53,15 +53,15 @@
   }
 
   .btn-ghost {
-    @apply shadow-none text-gray-900 hover:text-white hover:bg-gray-900 border-gray-900 hover:border-gray-900;
+    @apply shadow-none text-gray-900 hover:text-white hover:bg-gray-900 border-gray-900 hover:border-gray-900 active:bg-gray-900/80 active:border-gray-900/80;
   }
 
   .btn-primary {
-    @apply bg-gray-900 text-white border-none hover:bg-gray-900/90;
+    @apply bg-gray-900 text-white border-none hover:bg-gray-900/90 active:bg-gray-900/80;
   }
 
   .btn-inverted {
-    @apply bg-light text-light border-none hover:bg-white/90;
+    @apply bg-light text-light border-none hover:bg-white/90 active:bg-white/80;
   }
 }
 
