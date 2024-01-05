@@ -64,6 +64,7 @@ const { title, description } = Astro.props;
       }}
     />
     <CustomStyles />
+    <SpeedInsights />
     <ViewTransitions />
   </head>
   <body>
@@ -77,6 +78,5 @@ const { title, description } = Astro.props;
       ><Footer links={[...(LINKS as Link[]), ...(ACTIONS as Link[])]} social={SOCIAL} /></slot
     >
     <BasicScripts />
-    <SpeedInsights />
   </body>
 </html>

@@ -154,3 +154,17 @@
 .fadein-links-reverse {
   animation: fadein-links-reverse 0.25s forwards;
 }
+
+/* lazyloading and blurring */
+.blurred {
+  transition: filter 400ms;
+}
+
+.blurred.lazyload,
+.blurred.lazyloading {
+  filter: blur(10px);
+}
+
+.blurred.lazyloaded {
+  filter: blur(0px);
+}
