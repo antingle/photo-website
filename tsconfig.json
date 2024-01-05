@@ -1,14 +1,15 @@
 {
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
     "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "src/*"
-      ]
-    }
+      "~/*": ["src/*"]
+    },
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      }
+    ]
   }
 }

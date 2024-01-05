@@ -8,6 +8,7 @@ import { ACTIONS, LINKS, NAME, SOCIAL, DESCRIPTION } from "~/config";
 import { SEO } from "astro-seo";
 import type { Link } from "~/types/links";
 import { ViewTransitions } from "astro:transitions";
+import SpeedInsights from "@vercel/speed-insights/astro";
 
 export interface Props {
   title: string;
@@ -17,7 +18,7 @@ export interface Props {
 const { title, description } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -76,5 +77,6 @@ const { title, description } = Astro.props;
       ><Footer links={[...(LINKS as Link[]), ...(ACTIONS as Link[])]} social={SOCIAL} /></slot
     >
     <BasicScripts />
+    <SpeedInsights />
   </body>
 </html>

@@ -6,14 +6,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
-import solidJs from "@astrojs/solid-js";
-
-// https://astro.build/config
 import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), solidJs()],
+  integrations: [tailwind()],
   adapter: vercel({ imageService: true, speedInsights: { enabled: true }}),
   output: "server",
   vite: {
