@@ -11,7 +11,7 @@ import vercel from "@astrojs/vercel/serverless";
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind()],
-  adapter: vercel({ imageService: true, speedInsights: { enabled: true }}),
+  adapter: vercel({ imageService: true }),
   output: "server",
   vite: {
     resolve: {
