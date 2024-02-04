@@ -21,7 +21,7 @@ export default defineConfig({
     },
   },
   redirects: {
-    "/" : "/gallery/graduation",
-    "/gallery" : "gallery/graduation"
-  }
+    "/": "/gallery/graduation", // this is not ideal, but its for logical navigation in gallery
+    "/gallery": "gallery/graduation",
+  },
 });
