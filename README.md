@@ -1,55 +1,26 @@
-# Astro Starter Kit: Basics
+# Fast, Responsive, Beautiful Photography Website
 
-```
-npm create astro@latest -- --template basics
-```
+👋 Hey this is my personal photography website that I use to advertise my services! I had a lot of fun building it!
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+![Screenshot of Home Page](images/screenshot1.png)
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Architecture
 
-![basics](https://user-images.githubusercontent.com/4677417/186188965-73453154-fdec-4d6b-9c34-cb35c248ae5b.png)
+- The website is built using [Astro](https://astro.build) templates, Typescript scripts and TailwindCSS.
+- Simple packages such as [lazysizes](https://github.com/aFarkas/lazysizes) and [minimasonry](https://github.com/Spope/MiniMasonry.js) improve lazy loading and the gallery experience
+- Images are stored and served using [ImageKit CDN](https://imagekit.io)
+- The contact page sends transactional emails using [Brevo](https://brevo.com) (previously Sendinblue)
+- Booking links are linked to [Cal.com](https://cal.com)
+- The site is deployed on [Vercel](https://vercel.com)
 
+## Features
 
-## 🚀 Project Structure
+This architecture with Astro, ImageKit and more, makes for some pretty fantastic features.
 
-Inside of your Astro project, you'll see the following folders and files:
+- [Astro view transitions](https://docs.astro.build/en/guides/view-transitions/) make navigating the SSR site a smooth experience
+- [ImageKit image transformations](https://docs.imagekit.io/features/image-transformations) allow for me to drag and drop full size images into ImageKit, who then can serve them with an exact pixel match size to the screen looking at the webpage
 
-```
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Notes
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `npm install`          | Installs dependencies                            |
-| `npm run dev`          | Starts local dev server at `localhost:3000`      |
-| `npm run build`        | Build your production site to `./dist/`          |
-| `npm run preview`      | Preview your build locally, before deploying     |
-| `npm run astro ...`    | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- ImageKit has a fantastic writeup [here](https://imagekit.io/responsive-images/) on responsive images and techniques on how to best serve them. This was an immense help to me when setting up efficient image delivery.
+- If you want to copy my setup, my images are stored in `/portfolio/[category]` inside ImageKit
