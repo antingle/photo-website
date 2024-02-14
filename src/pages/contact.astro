@@ -23,13 +23,22 @@ if (Astro.request.method === "POST") {
       // check for error codes
       throw Error(captchaResult.errorCodes.join(","));
     } else if (captchaResult.success == false) {
-      submissionError = true;
+      // check if failed captcha
       throw Error("reCAPTCHA invalid");
     }
 
     const name = data.get("name") as string;
     const email = data.get("email") as string;
     const message = data.get("message") as string;
+
+    // another bot prevention strat because apparently reCaptcha isn't enough
+    // check if message contains a URL and don't send email if it does
+    let urlRegex = new RegExp(
+      "([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?"
+    );
+    if (urlRegex.test(message)) {
+      throw Error("Message contains a URL");
+    }
 
     const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
     const key = import.meta.env.EMAIL_API_KEY || "";
@@ -58,9 +67,6 @@ if (Astro.request.method === "POST") {
     console.error(error);
   }
 }
-
-// The "text" div below is used to prevent bots from spamming the form.
-// They hopefully fill out the text field when is hidden for normal users.
 ---
 
 <Layout title="Contact">
