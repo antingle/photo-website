@@ -77,105 +77,103 @@ if (Astro.request.method === "POST") {
     }
   </script>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <div>
-    <main class="m-auto rounded-xl py-8 px-4 sm:px-12 max-w-2xl">
-      <h1 class="text-primary text-4xl font-bold mb-8">Contact Me</h1>
-      <div class="flex gap-6 mb-8">
-        {
-          CONTACT.map(({ ariaLabel, href, icon, customClasses }) => (
-            <a
-              href={href}
-              rel="noreferrer"
-              target="_blank"
-              class:list={["text-primary", customClasses]}
-            >
-              <Icon class="w-7 h-7" name={icon} />
-              <span class="sr-only">{ariaLabel}</span>
-            </a>
-          ))
-        }
-      </div>
-      <hr class="mb-4" />
-
+  <main class="m-auto rounded-xl py-8 px-4 sm:px-12 max-w-2xl w-full">
+    <h1 class="text-primary text-4xl font-bold mb-8">Contact Me</h1>
+    <div class="flex gap-6 mb-8">
       {
-        !messageSent ? (
-          <form method="post">
-            <h2 class="text-primary text-2xl font-bold my-4">Send a Message</h2>
-            <div class="mb-6">
-              <label for="name" class="block mb-2 text-sm font-medium text-gray-900">
-                Name
-              </label>
-              <input
-                type="text"
-                name="name"
-                class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 focus:outline-primary"
-                placeholder="Enter your name"
-                required
-              />
-            </div>
-            <div class="mb-6">
-              <label for="email" class="block mb-2 text-sm font-medium text-gray-900">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:primary focus:border-primary block w-full p-2.5 focus:outline-primary"
-                placeholder="Enter your email"
-                required
-              />
-            </div>
-            <div class="hidden" aria-hidden>
-              <label for="text" class="hidden" aria-hidden>
-                Text
-              </label>
-              <input type="text" name="text" class="hidden" placeholder="Enter text" aria-hidden />
-            </div>
-            <div class="mb-6">
-              <label for="message" class="block mb-2 text-sm font-medium text-gray-900">
-                Message
-              </label>
-              <textarea
-                name="message"
-                class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 focus:outline-primary min-h-[42px]"
-                placeholder="Type your message here"
-                rows="4"
-                required
-              />
-            </div>
-            <div class="relative">
-              <div
-                class="g-recaptcha mb-6"
-                data-callback="recaptchaCallback"
-                data-sitekey={import.meta.env.RECAPTCHA_SITE_KEY}
-              />
-              <input
-                id="recaptcha_check_empty"
-                required
-                tabindex="-1"
-                style="width:50px; opacity:0; pointer-events:none; position:absolute;top:0; bottom:0;"
-                oninvalid="this.setCustomValidity('Please fill out the reCAPTCHA')"
-              />
-            </div>
-
-            <button type="submit" class="btn btn-primary font-medium text-sm px-12 w-full group">
-              Send
-              <Icon class="w-4 h-4 ml-2 group-hover:-rotate-45 transition-all" name="mdi:send" />
-            </button>
-            {submissionError && (
-              <p class="text-red-500 text-sm mt-2">
-                I'm sorry, something went wrong. Please try again.
-              </p>
-            )}
-          </form>
-        ) : (
-          <div>
-            <Icon class="w-10 h-10 text-green-600" name="simple-line-icons:check" />
-            <p class="font-bold text-2xl my-4">Thank you for reaching out!</p>
-            <p>I will get back to you as soon as possible.</p>
-          </div>
-        )
+        CONTACT.map(({ ariaLabel, href, icon, customClasses }) => (
+          <a
+            href={href}
+            rel="noreferrer"
+            target="_blank"
+            class:list={["text-primary", customClasses]}
+          >
+            <Icon class="w-7 h-7" name={icon} />
+            <span class="sr-only">{ariaLabel}</span>
+          </a>
+        ))
       }
-    </main>
-  </div>
+    </div>
+    <hr class="mb-4" />
+
+    {
+      !messageSent ? (
+        <form method="post">
+          <h2 class="text-primary text-2xl font-bold my-4">Send a Message</h2>
+          <div class="mb-6">
+            <label for="name" class="block mb-2 text-sm font-medium text-gray-900">
+              Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 focus:outline-primary"
+              placeholder="Enter your name"
+              required
+            />
+          </div>
+          <div class="mb-6">
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:primary focus:border-primary block w-full p-2.5 focus:outline-primary"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div class="hidden" aria-hidden>
+            <label for="text" class="hidden" aria-hidden>
+              Text
+            </label>
+            <input type="text" name="text" class="hidden" placeholder="Enter text" aria-hidden />
+          </div>
+          <div class="mb-6">
+            <label for="message" class="block mb-2 text-sm font-medium text-gray-900">
+              Message
+            </label>
+            <textarea
+              name="message"
+              class="bg-slate-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 focus:outline-primary min-h-[42px]"
+              placeholder="Type your message here"
+              rows="4"
+              required
+            />
+          </div>
+          <div class="relative">
+            <div
+              class="g-recaptcha mb-6"
+              data-callback="recaptchaCallback"
+              data-sitekey={import.meta.env.RECAPTCHA_SITE_KEY}
+            />
+            <input
+              id="recaptcha_check_empty"
+              required
+              tabindex="-1"
+              style="width:50px; opacity:0; pointer-events:none; position:absolute;top:0; bottom:0;"
+              oninvalid="this.setCustomValidity('Please fill out the reCAPTCHA')"
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary font-medium text-sm px-12 w-full group">
+            Send
+            <Icon class="w-4 h-4 ml-2 group-hover:-rotate-45 transition-all" name="mdi:send" />
+          </button>
+          {submissionError && (
+            <p class="text-red-500 text-sm mt-2">
+              I'm sorry, something went wrong. Please try again.
+            </p>
+          )}
+        </form>
+      ) : (
+        <div>
+          <Icon class="w-10 h-10 text-green-600" name="simple-line-icons:check" />
+          <p class="font-bold text-2xl my-4">Thank you for reaching out!</p>
+          <p>I will get back to you as soon as possible.</p>
+        </div>
+      )
+    }
+  </main>
 </Layout>
