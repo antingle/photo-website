@@ -12,7 +12,7 @@ import vercel from "@astrojs/vercel/serverless";
 export default defineConfig({
   integrations: [tailwind()],
   adapter: vercel({ imageService: true, webAnalytics: { enabled: true } }),
-  output: "server",
+  output: "hybrid",
   vite: {
     resolve: {
       alias: {

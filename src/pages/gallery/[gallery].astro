@@ -3,6 +3,17 @@ import Layout from "~/layouts/BaseLayout.astro";
 import Gallery from "~/components/widgets/Gallery.astro";
 import NavTabs from "~/components/common/NavTabs.astro";
 
+export function getStaticPaths() {
+  let galleries = ["graduation", "portraits", "family"];
+  return galleries.map((gallery) => {
+    return {
+      params: {
+        gallery: gallery,
+      },
+    };
+  });
+}
+
 const { gallery } = Astro.params;
 let galleries = ["graduation", "portraits", "family"];
 

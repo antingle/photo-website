@@ -2,6 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-primary: rgb(17, 24, 39);
+  --color-secondary: rgba(17, 24, 39, 0.9);
+  --color-text-light: rgb(17 24 39);
+  --color-text-muted: rgb(75 85 99);
+  --color-bg-light: rgb(255 255 255);
+  --color-bg-light-secondary: rgb(241, 245, 249);
+}
+
+html {
+  font-family: system-ui, sans-serif;
+  background-color: var(--color-bg-light);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+body > main {
+  flex: 1;
+}
+
+/* for photoswipe package */
+.pswp__bg {
+  background: white !important;
+}
+
+/* counter text */
+.pswp {
+  /* first color is tailwind gray 600 */
+  --pswp-icon-color: #4b5563 !important;
+  --pswp-icon-color-secondary: white !important;
+}
+
 @layer components {
   .text-light {
     color: var(--color-text-light);
