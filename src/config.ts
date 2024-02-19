@@ -20,12 +20,12 @@ const SOCIAL: SocialLink[] = [
     href: "https://www.instagram.com/ant.ing/",
     customClasses: ["hover:text-fuchsia-600"],
   },
-  {
-    icon: "ic:baseline-tiktok",
-    ariaLabel: "TikTok Profile",
-    href: "https://www.tiktok.com/@ant.photos",
-    customClasses: ["hover:text-black"],
-  },
+  // {
+  //   icon: "ic:baseline-tiktok",
+  //   ariaLabel: "TikTok Profile",
+  //   href: "https://www.tiktok.com/@ant.photos",
+  //   customClasses: ["hover:text-black"],
+  // },
   {
     icon: "ri:youtube-fill",
     ariaLabel: "Youtube Shorts Page",

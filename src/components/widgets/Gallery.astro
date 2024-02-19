@@ -59,7 +59,7 @@ for (let i = 1.0; i < 3.5; i += 0.5) {
 }
 ---
 
-<div class="grid max-w-screen-2xl m-auto" transition:animate="fade">
+<div class="grid max-w-screen-2xl m-auto min-h-screen" transition:animate="fade">
   {
     data?.map((photo) => {
       return (
@@ -83,7 +83,7 @@ for (let i = 1.0; i < 3.5; i += 0.5) {
 <style>
   /* ---- old masonry layout ----
   TODO: use this on no javascript enabled */
-  .masonry-with-columns {
+  /* .masonry-with-columns {
     columns: 4 240px;
     column-gap: 1rem;
     padding: 0rem 1rem;
@@ -92,7 +92,7 @@ for (let i = 1.0; i < 3.5; i += 0.5) {
     display: inline-block;
     margin-bottom: 1rem;
     overflow: hidden;
-  }
+  } */
   /* ----------------------------- */
 
   .grid {
@@ -118,11 +118,9 @@ for (let i = 1.0; i < 3.5; i += 0.5) {
   masonry.layout();
 
   document.addEventListener("astro:after-swap", () => {
-    console.log("BEFORE");
     masonry.destroy();
   });
   document.addEventListener("astro:after-swap", () => {
-    console.log("AFTER");
     masonry = new MiniMasonry(masonryOptions);
     masonry.layout();
   });
