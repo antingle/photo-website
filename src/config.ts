@@ -35,7 +35,7 @@ const SOCIAL: SocialLink[] = [
   {
     icon: "mdi:github",
     ariaLabel: "Github Account",
-    href: "https://www.github.com/ingleanthony/",
+    href: "https://www.github.com/antingle/photo-website",
     customClasses: ["hover:text-slate-800"],
   },
 ];

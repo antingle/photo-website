@@ -35,6 +35,9 @@ dependencies:
   minimasonry:
     specifier: ^1.3.2
     version: 1.3.2
+  photoswipe:
+    specifier: ^5.4.3
+    version: 5.4.3
   tailwindcss:
     specifier: ^3.4.0
     version: 3.4.0
@@ -3929,6 +3932,11 @@ packages:
 
   /performance-now@2.1.0:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
+    dev: false
+
+  /photoswipe@5.4.3:
+    resolution: {integrity: sha512-9UC6oJBK4oXFZ5HcdlcvGkfEHsVrmE4csUdCQhEjHYb3PvPLO3PG7UhnPuOgjxwmhq5s17Un5NUdum01LgBDng==}
+    engines: {node: '>= 0.12.0'}
     dev: false
 
   /picocolors@1.0.0:

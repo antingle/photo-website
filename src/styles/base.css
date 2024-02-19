@@ -157,7 +157,7 @@
 
 /* lazyloading and blurring */
 .blurred {
-  transition: filter 400ms;
+  transition: all 300ms;
 }
 
 .blurred.lazyload,

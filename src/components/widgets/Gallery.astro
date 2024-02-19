@@ -1,4 +1,5 @@
 ---
+// (all of this code before the html is run on the server)
 import { generateSrcset } from "~/utils/images";
 import type { IKImage } from "~/types/api";
 
@@ -16,11 +17,13 @@ const res = await fetch(`https://api.imagekit.io/v1/files?path=portfolio/${selec
 const data: IKImage[] = await res.json();
 data.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)); // sort by date created descending
 
+// this config is to generate correct srcset sizes for responsive images
 const mConfig = {
-  numCols: 4,
-  columnGap: 16,
-  containerPadding: 32,
-  columnSize: 280,
+  numCols: 4, // max number of columns
+  columnGap: 16, // gap between columns
+  containerPadding: 32, // total padding for the container holding all images (16px on each side)
+  columnSize: 300, // max size a column can be
+  containerMaxWidth: 1536, // max width of the container in px (we constrain container with tailwind max-w-screen-2xl class)
 };
 
 let sizes = "";
@@ -46,35 +49,45 @@ for (let i = 2; i < mConfig.numCols + 2; ++i) {
   const viewportWidth = Math.ceil((imageWidth / maxWidth) * 100);
 
   if (i == mConfig.numCols + 1) {
-    // is last
-    sizes += `${viewportWidth}vw`;
+    // for last column
+    // sizes += `${viewportWidth}vw`; // use this if container is not clipped
+    // otherwise use concrete pixel max width
+    sizes += `${mConfig.containerMaxWidth}px`;
   } else {
     sizes += `(max-width:${maxWidth}px) ${viewportWidth}vw, `;
   }
 }
 
-// generate different srcset sizes
+// generate different srcset sizes (1x, 1.5x, 2x, 2.5x, 3x)
 for (let i = 1.0; i < 3.5; i += 0.5) {
   srcsetSizes.push(Math.ceil(maxImageWidth * i));
 }
 ---
 
-<div class="grid max-w-screen-2xl m-auto min-h-screen" transition:animate="fade">
+<div id="gallery" class="grid max-w-screen-2xl m-auto min-h-screen" transition:animate="fade">
   {
     data?.map((photo) => {
+      let srcset = generateSrcset(srcsetSizes, photo.url);
+
       return (
-        <div class="grid-item">
-          <div class="bg-light-secondary slidein-intersect">
+        <div class="grid-item ">
+          <a
+            class="block rounded-md overflow-hidden slidein-intersect cursor-zoom-in relative"
+            data-pswp-src={`${photo.url}?tr=w-${mConfig.columnSize},q-30`}
+            data-pswp-srcset={srcset}
+            data-pswp-width={photo.width}
+            data-pswp-height={photo.height}
+          >
             <img
-              class="lazyload blurred"
+              class="lazyload blurred hover:scale-[1.03]"
               src={`${photo.url}?tr=w-${mConfig.columnSize},q-30`}
               data-sizes={sizes}
-              data-srcset={generateSrcset(srcsetSizes, photo.url)}
+              data-srcset={srcset}
               alt={photo.name}
               width={photo.width}
               height={photo.height}
             />
-          </div>
+          </a>
         </div>
       );
     })
@@ -106,22 +119,42 @@ for (let i = 1.0; i < 3.5; i += 0.5) {
 <script>
   import "lazysizes";
   import MiniMasonry, { type MiniMasonryOptions } from "minimasonry";
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+  import "photoswipe/style.css";
 
   // create masonry layout
   let masonryOptions: MiniMasonryOptions = {
     container: ".grid",
-    baseWidth: 280,
+    baseWidth: 300,
     gutter: 16,
     ultimateGutter: 16,
   };
-  var masonry = new MiniMasonry(masonryOptions);
+  let masonry = new MiniMasonry(masonryOptions);
   masonry.layout();
 
+  // create lightbox (for clicking images)
+  let lightboxOptions = {
+    bgOpacity: 0.9,
+    gallery: "#gallery",
+    children: "a",
+    pswpModule: () => import("photoswipe"),
+  };
+
+  let lightbox = new PhotoSwipeLightbox(lightboxOptions);
+  lightbox.init();
+
   document.addEventListener("astro:after-swap", () => {
+    // destroy on view transitions between galleries
     masonry.destroy();
+    lightbox.destroy();
   });
+
   document.addEventListener("astro:after-swap", () => {
+    // we need to relayout on view transitions between galleries
     masonry = new MiniMasonry(masonryOptions);
     masonry.layout();
+
+    lightbox = new PhotoSwipeLightbox(lightboxOptions);
+    lightbox.init();
   });
 </script>
