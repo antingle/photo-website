@@ -70,8 +70,9 @@ for (let i = 1.0; i < 3.5; i += 0.5) {
       let srcset = generateSrcset(srcsetSizes, photo.url);
 
       return (
-        <div class="grid-item ">
+        <div id="photo" class="grid-item ">
           <a
+            id="photo"
             class="block rounded-md overflow-hidden slidein-intersect cursor-zoom-in relative"
             data-pswp-src={`${photo.url}?tr=w-${mConfig.columnSize},q-30`}
             data-pswp-srcset={srcset}
