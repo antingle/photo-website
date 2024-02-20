@@ -12,8 +12,14 @@
 }
 
 html {
-  font-family: system-ui, sans-serif;
-  background-color: var(--color-bg-light);
+  overflow-y: scroll;
+}
+
+@supports (scrollbar-gutter: stable) {
+  html {
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
 }
 
 body {

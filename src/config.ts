@@ -69,6 +69,6 @@ const CONTACT: SocialLink[] = [
 
 const NAME = "Anthony Ingle Photography";
 const DESCRIPTION =
-  "Anthony Ingle is a photographer located in Tallahassee, Florida and the Florida State University area";
+  "Anthony Ingle is a photographer located in Tallahassee, Florida and the Florida State University area. Book a session today!";
 
 export { LINKS, NAME, DESCRIPTION, SOCIAL, ACTIONS, CONTACT };
