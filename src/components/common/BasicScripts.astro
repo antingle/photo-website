@@ -78,11 +78,11 @@
 
       navLinks?.forEach((e, i) => {
         if (e.classList.contains("slidein-links")) {
-          e.setAttribute("style", `animation-delay: ${100 * (navLinks.length - i - 1)}ms;`);
+          e.setAttribute("style", `animation-delay: ${80 * (navLinks.length - i - 1)}ms;`);
           e.classList.remove("slidein-links");
           e.classList.add("slidein-links-reverse");
         } else {
-          e.setAttribute("style", `opacity: 0%; animation-delay: ${100 * i}ms;`);
+          e.setAttribute("style", `opacity: 0%; animation-delay: ${80 * i}ms;`);
           e.classList.remove("slidein-links-reverse");
           e.classList.add("slidein-links");
         }
@@ -90,13 +90,13 @@
 
       actionLinks?.forEach((e, i) => {
         if (e.classList.contains("fadein-links")) {
-          e.setAttribute("style", `animation-delay: ${100 * (actionLinks.length - i - 1)}ms;`);
+          e.setAttribute("style", `animation-delay: ${80 * (actionLinks.length - i - 1)}ms;`);
           e.classList.remove("fadein-links");
           e.classList.add("fadein-links-reverse");
         } else {
           e.setAttribute(
             "style",
-            `opacity: 0%; animation-delay: ${100 * (i + navLinks.length - 1)}ms;`
+            `opacity: 0%; animation-delay: ${80 * (i + navLinks.length - 1)}ms;`
           );
           e.classList.remove("fadein-links-reverse");
           e.classList.add("fadein-links");

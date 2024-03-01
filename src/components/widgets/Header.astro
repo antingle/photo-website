@@ -55,7 +55,7 @@ const currentPath = Astro.url.pathname; // use to highlight current path link
               <li>
                 <a
                   class:list={[
-                    "font-light hover:bg-white/60 hover:outline hover:outline-2 hover:shadow-md outline-gray-300 active:outline-gray-600 rounded-2xl px-8 py-3 flex items-center justify-center transition duration-150 ease-in-out",
+                    "font-light hover:bg-white/60 hover:outline hover:outline-2 hover:shadow-md outline-gray-300 active:outline-gray-600 rounded-2xl px-8 py-3 flex items-center justify-center transition duration-150 ease",
                     currentPath.split("/")[1] == href.split("/")[1]
                       ? "outline outline-2 outline-gray-700 bg-white/60 shadow-md"
                       : "",

@@ -3,7 +3,7 @@ import "~/styles/base.css";
 import BasicScripts from "~/components/common/BasicScripts.astro";
 import Footer from "~/components/widgets/Footer.astro";
 import Header from "~/components/widgets/Header.astro";
-import { ACTIONS, LINKS, NAME, SOCIAL, DESCRIPTION } from "~/config";
+import { ACTIONS, LINKS, NAME, SOCIAL, DESCRIPTION, TWITTER_CREATOR } from "~/config";
 import { SEO } from "astro-seo";
 import type { Link } from "~/types/links";
 import { ViewTransitions } from "astro:transitions";
@@ -12,9 +12,15 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 export interface Props {
   title: string;
   description?: string;
+  blogTitle?: string;
+  socialImage?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, blogTitle = null, socialImage = null } = Astro.props;
+
+const finalTitle = blogTitle ? `${blogTitle}` : `${NAME} | ${title}`;
+const finalDescription = description || DESCRIPTION;
+const finalImage = socialImage || "https://anthonyinglephotos.com/social.jpg";
 ---
 
 <!doctype html>
@@ -38,27 +44,27 @@ const { title, description } = Astro.props;
     <meta name="theme-color" content="#ffffff" />
 
     <SEO
-      title={`${NAME} | ${title}`}
-      description={description || DESCRIPTION}
+      title={finalTitle}
+      description={finalDescription}
       openGraph={{
         basic: {
-          title: `${NAME} | ${title}`,
+          title: finalTitle,
           type: "website",
-          image: "https://anthonyinglephotos.com/social.jpg",
+          image: finalImage,
         },
       }}
       twitter={{
-        creator: "@ingleant",
+        creator: TWITTER_CREATOR,
       }}
       extend={{
         // extending the default meta tags
         meta: [
           {
             name: "twitter:image",
-            content: "https://anthonyinglephotos.com/logo.svg",
+            content: finalImage,
           },
-          { name: "twitter:title", content: NAME },
-          { name: "twitter:description", content: DESCRIPTION },
+          { name: "twitter:title", content: finalTitle },
+          { name: "twitter:description", content: finalDescription },
         ],
       }}
     />
@@ -72,9 +78,9 @@ const { title, description } = Astro.props;
 
     <slot />
 
-    <slot name="footer"
-      ><Footer links={[...(LINKS as Link[]), ...(ACTIONS as Link[])]} social={SOCIAL} /></slot
-    >
+    <slot name="footer">
+      <Footer links={[...(LINKS as Link[]), ...(ACTIONS as Link[])]} social={SOCIAL} />
+    </slot>
     <BasicScripts />
   </body>
 </html>

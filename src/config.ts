@@ -2,6 +2,7 @@ import type { ActionLink, MenuLink, SocialLink } from "~/types/links";
 const LINKS: MenuLink[] = [
   { text: "Gallery", href: "/gallery/graduation" },
   { text: "About", href: "/about" },
+  { text: "Blog", href: "/blog" },
   { text: "Contact", href: "/contact" },
 ];
 
@@ -70,5 +71,6 @@ const CONTACT: SocialLink[] = [
 const NAME = "Anthony Ingle Photography";
 const DESCRIPTION =
   "Anthony Ingle is a photographer located in Tallahassee, Florida and the Florida State University area. Book a session today!";
+const TWITTER_CREATOR = "@ingleant";
 
-export { LINKS, NAME, DESCRIPTION, SOCIAL, ACTIONS, CONTACT };
+export { LINKS, NAME, DESCRIPTION, SOCIAL, ACTIONS, CONTACT, TWITTER_CREATOR };

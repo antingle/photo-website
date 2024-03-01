@@ -1,0 +1,29 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+const { frontmatter } = Astro.props;
+---
+
+<BaseLayout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  blogTitle={frontmatter.title}
+  socialImage={frontmatter.socialImage}
+>
+  <article class="prose lg:prose-xl p-4 max-w-3xl mx-auto mt-4 mb-24">
+    <h1>{frontmatter.title}</h1>
+    <p>{frontmatter.description}</p>
+    <p class="text-sm text-gray-500">
+      {
+        new Date(frontmatter.publishDate).toLocaleDateString("en-US", {
+          weekday: "long",
+          day: "numeric",
+          year: "numeric",
+          month: "long",
+        })
+      }
+    </p>
+    <hr />
+    <slot />
+  </article>
+</BaseLayout>

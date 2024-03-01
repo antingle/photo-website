@@ -1,0 +1,28 @@
+---
+import Icon from "astro-icon";
+
+export interface Props {
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  href: string;
+}
+
+const { title, description, image, imageAlt, href } = Astro.props;
+---
+
+<a
+  href={href}
+  class="block bg-white border border-gray-200 rounded-xl shadow-xl no-underline hover:bg-slate-50"
+>
+  <img src={image} alt={imageAlt} class="w-full h-56 object-cover rounded-t-xl" />
+  <div class="p-8">
+    <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">{title}</h2>
+    <p>{description}</p>
+    <p class="flex justify-end items-center text-gray-600">
+      <span>Read More</span>
+      <Icon class="inline ml-1 w-5 h-5" name="mdi:arrow-right" />
+    </p>
+  </div>
+</a>
