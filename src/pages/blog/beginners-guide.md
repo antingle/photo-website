@@ -9,7 +9,7 @@ socialImage: https://images.unsplash.com/photo-1501669362114-90c01bd6aeaa?q=80&w
 
 You want to get into photography but don't know where to start? There are so many different cameras, some cost $500 while others cost $3000?? Can I even afford one? What is a DSLR? Which brand should I get?
 
-Don't worry, Let's break it all down so you know which camera is right for you.
+Don't worry, let's break it all down so you know which camera is right for you.
 
 ## Camera Types
 
@@ -31,7 +31,7 @@ This type of camera has been around for the past 30+ years, and actually started
 
 ![Mirrorless camera](https://images.unsplash.com/photo-1608204683146-0f7e909dca59?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
 
-As the name suggests, unlike DSLRs, Mirrorless cameras do not have a mirrors in them. Instead, the camera sensor is directly exposed. This brings a number of advtanages. The camera shows a live preview on the screen and through the viewfinder of exactly what a picture will look like before it is taken. Burst pictures can also be taken faster, since a mirror does not need to be flipped up everytime. Mirrorless cameras are now the standard for interchangeable-lens cameras and it is probably what you want if you are buying a modern camera.
+As the name suggests, unlike DSLRs, Mirrorless cameras do not have a mirror in them. Instead, the camera sensor is directly exposed. This brings a number of advantages. The camera shows a live preview on the screen and through the viewfinder of exactly what a picture will look like before it is taken. Burst pictures can also be taken faster, since a mirror does not need to be flipped up everytime. Mirrorless cameras are now the standard for interchangeable-lens cameras and it is probably what you want if you are buying a modern camera.
 
 ## Sensor sizes
 
