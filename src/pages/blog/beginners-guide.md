@@ -131,7 +131,7 @@ Fujifilm is brand that's historically created retro-styled cameras, so if you're
 
 ### Full frame
 
-Honestly, full frame cameras are not considered entry-level because their price tags are too steep. I would stick with an APS-C camera if you are just getting started. If you really wanted a cheaper full frame camera to get you started, your best bet would be to buy a used older full frame model. I won't recommend any particular old or used cameras for this category because I don't think its worth overwhelming begineers with $1000+ price tags and features they don't understand. You might not even be sure if photography is right for you!
+Honestly, full frame cameras are not considered entry-level because their price tags are too steep. I would stick with an APS-C camera if you are just getting started. If you really wanted a cheaper full frame camera to get you started, your best bet would be to buy a used older full frame model. I won't recommend any particular old or used cameras for this category because I don't think its worth overwhelming beginners with $1000+ price tags and features they don't understand. You might not even be sure if photography is right for you!
 
 Full frame cameras have features geared towards professionals, who need high quality, speed and fallback for failure (such as dual SD cards). Trust me, those APS-C recommendations above are incredible, and I honestly miss the APS-C form factor because the cameras are so light and easy to carry around. My full frame camera setup usually weighs over 8 pounds and is an arm workout everytime.
 
