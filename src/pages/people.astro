@@ -34,7 +34,13 @@ const withPhotos = await Promise.all(
     {withPhotos.map(({ id, title, photos }) => (
       <section aria-labelledby={id}>
         <SectionHeading id={id}>{title}</SectionHeading>
-        <PhotoGallery photos={photos} label={title} fallbackAlt={`${title} photograph`} />
+        <PhotoGallery
+          photos={photos}
+          label={title}
+          fallbackAlt={`${title} photograph`}
+          stackOnPhone
+          portraitsPerRow={4}
+        />
       </section>
     ))}
   </div>

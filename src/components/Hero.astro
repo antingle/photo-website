@@ -1,12 +1,19 @@
 ---
+/**
+ * Full-width hero carousel. Each new photo is revealed by a wipe across the
+ * frame (a clip-path sweeping open on top of the current photo); neither photo
+ * moves. Autoplays, with pause, prev/next, a counter and swipe on phones.
+ */
 import { placeholder, sized, srcset, type Photo } from "~/lib/imagekit";
 
 interface Props {
-  photo: Photo;
-  alt: string;
+  photos: Photo[];
+  /** Used when a photo has no "alt" custom metadata in ImageKit. */
+  fallbackAlt: string;
 }
 
-const { photo, alt } = Astro.props;
+const { photos, fallbackAlt } = Astro.props;
+const multiple = photos.length > 1;
 
 // The hero is cropped to fill a fixed height (object-fit: cover). On tall
 // screens that crop is wider than the viewport, so the browser must be told
@@ -14,25 +21,237 @@ const { photo, alt } = Astro.props;
 // small and the photo looks soft. Keep the vh values in sync with the classes below.
 const PHONE_HEIGHT_VH = 78;
 const DESKTOP_HEIGHT_VH = 88;
-const sizes = [
-  `(max-width: 767px) ${Math.ceil(PHONE_HEIGHT_VH * photo.ratio)}vh`,
-  `(orientation: portrait) ${Math.ceil(DESKTOP_HEIGHT_VH * photo.ratio)}vh`,
-  "100vw",
-].join(", ");
+const sizesFor = (photo: Photo) =>
+  [
+    `(max-width: 767px) ${Math.ceil(PHONE_HEIGHT_VH * photo.ratio)}vh`,
+    `(orientation: portrait) ${Math.ceil(DESKTOP_HEIGHT_VH * photo.ratio)}vh`,
+    "100vw",
+  ].join(", ");
+
+const pad = (n: number) => String(n).padStart(2, "0");
 ---
 
-<figure>
-  <img
-    src={sized(photo, 1920)}
-    srcset={srcset(photo)}
-    sizes={sizes}
-    width={photo.width}
-    height={photo.height}
-    alt={alt}
-    loading="eager"
-    fetchpriority="high"
-    decoding="async"
-    class="block h-[78svh] w-full bg-well bg-cover object-cover object-[58%_center] md:h-[clamp(480px,88vh,980px)] md:object-center"
-    style={`background-image: url(${placeholder(photo)})`}
-  />
-</figure>
+<section
+  data-carousel
+  aria-roledescription="carousel"
+  aria-label="Featured photos"
+  class="relative"
+>
+  <div
+    data-track
+    class="relative h-[78svh] touch-pan-y overflow-hidden bg-well md:h-[clamp(480px,88vh,980px)]"
+  >
+    {photos.map((photo, i) => (
+      <img
+        data-slide
+        src={sized(photo, 1920)}
+        srcset={srcset(photo)}
+        sizes={sizesFor(photo)}
+        width={photo.width}
+        height={photo.height}
+        alt={photo.alt || fallbackAlt}
+        aria-hidden={i === 0 ? undefined : "true"}
+        loading={i === 0 ? "eager" : "lazy"}
+        fetchpriority={i === 0 ? "high" : "low"}
+        decoding="async"
+        class="slide absolute inset-0 block size-full bg-cover object-cover object-[58%_center] md:object-center"
+        style={`background-image: url(${placeholder(photo)})`}
+      />
+    ))}
+  </div>
+
+  {multiple && (
+    <div class="flex items-center justify-end gap-1 px-3 py-2 text-sm md:px-14">
+      <button
+        type="button"
+        data-pause
+        aria-label="Pause slideshow"
+        class="inline-flex size-11 items-center justify-center text-muted hover:text-ink"
+      >
+        <svg
+          data-icon-pause
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <rect x="6" y="5" width="4" height="14" rx="1" />
+          <rect x="14" y="5" width="4" height="14" rx="1" />
+        </svg>
+        <svg
+          data-icon-play
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+          class="hidden"
+        >
+          <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        data-prev
+        aria-label="Previous photo"
+        class="inline-flex size-11 items-center justify-center"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          aria-hidden="true"
+        >
+          <path d="M15 6l-6 6 6 6" />
+        </svg>
+      </button>
+      <span class="min-w-14 text-center tabular-nums">
+        <span data-index>01</span> / {pad(photos.length)}
+      </span>
+      <button
+        type="button"
+        data-next
+        aria-label="Next photo"
+        class="inline-flex size-11 items-center justify-center"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          aria-hidden="true"
+        >
+          <path d="M9 6l6 6-6 6" />
+        </svg>
+      </button>
+    </div>
+  )}
+</section>
+
+<style>
+  /* Only the first photo shows until the script takes over. */
+  .slide:not(:first-child) {
+    clip-path: inset(0 0 0 100%);
+  }
+</style>
+
+<script>
+  const INTERVAL_MS = 6000;
+  const WIPE = "clip-path 1.1s cubic-bezier(0.65, 0, 0.35, 1)";
+  const HIDDEN_RIGHT = "inset(0 0 0 100%)";
+  const HIDDEN_LEFT = "inset(0 100% 0 0)";
+  const SHOWN = "inset(0 0 0 0)";
+
+  const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function setUpCarousel(root: HTMLElement) {
+    const slides = [...root.querySelectorAll<HTMLImageElement>("[data-slide]")];
+    if (slides.length < 2) return () => {};
+
+    const indexLabel = root.querySelector<HTMLElement>("[data-index]")!;
+    const pauseButton = root.querySelector<HTMLButtonElement>("[data-pause]")!;
+    let current = 0;
+    let userPaused = reduceMotion();
+    let timer: number | undefined;
+
+    slides.forEach((slide, i) => {
+      slide.style.zIndex = i === 0 ? "2" : "0";
+      slide.style.clipPath = i === 0 ? SHOWN : HIDDEN_RIGHT;
+    });
+
+    const goTo = (next: number, direction: 1 | -1) => {
+      next = (next + slides.length) % slides.length;
+      if (next === current) return;
+      const outgoing = slides[current];
+      const incoming = slides[next];
+
+      // Park every other slide out of sight.
+      slides.forEach((slide) => {
+        if (slide !== outgoing && slide !== incoming) {
+          slide.style.transition = "none";
+          slide.style.zIndex = "0";
+          slide.style.clipPath = HIDDEN_RIGHT;
+        }
+      });
+
+      // The outgoing photo stays still underneath; the incoming one is wiped
+      // open on top of it from the side we're moving toward.
+      outgoing.style.zIndex = "1";
+      incoming.style.transition = "none";
+      incoming.style.zIndex = "2";
+      incoming.style.clipPath = direction === 1 ? HIDDEN_RIGHT : HIDDEN_LEFT;
+      void incoming.offsetWidth; // commit the start state before animating
+      incoming.style.transition = reduceMotion() ? "none" : WIPE;
+      incoming.style.clipPath = SHOWN;
+
+      outgoing.setAttribute("aria-hidden", "true");
+      incoming.removeAttribute("aria-hidden");
+      current = next;
+      indexLabel.textContent = String(current + 1).padStart(2, "0");
+    };
+
+    const stop = () => window.clearInterval(timer);
+    const start = () => {
+      stop();
+      if (!userPaused && !document.hidden) {
+        timer = window.setInterval(() => goTo(current + 1, 1), INTERVAL_MS);
+      }
+    };
+    const step = (direction: 1 | -1) => {
+      goTo(current + direction, direction);
+      start(); // restart the countdown after a manual change
+    };
+
+    const renderPause = () => {
+      pauseButton.setAttribute("aria-label", userPaused ? "Play slideshow" : "Pause slideshow");
+      pauseButton.querySelector("[data-icon-pause]")?.classList.toggle("hidden", userPaused);
+      pauseButton.querySelector("[data-icon-play]")?.classList.toggle("hidden", !userPaused);
+    };
+
+    root.querySelector("[data-next]")?.addEventListener("click", () => step(1));
+    root.querySelector("[data-prev]")?.addEventListener("click", () => step(-1));
+    pauseButton.addEventListener("click", () => {
+      userPaused = !userPaused;
+      renderPause();
+      start();
+    });
+
+    // Swipe on touch screens.
+    const track = root.querySelector<HTMLElement>("[data-track]")!;
+    let startX: number | null = null;
+    track.addEventListener("pointerdown", (e) => (startX = e.clientX));
+    track.addEventListener("pointerup", (e) => {
+      if (startX === null) return;
+      const dx = e.clientX - startX;
+      startX = null;
+      if (Math.abs(dx) > 40) step(dx < 0 ? 1 : -1);
+    });
+
+    const onVisibility = () => start();
+    document.addEventListener("visibilitychange", onVisibility);
+
+    renderPause();
+    start();
+    return () => {
+      stop();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }
+
+  let cleanups: (() => void)[] = [];
+
+  document.addEventListener("astro:page-load", () => {
+    cleanups = [...document.querySelectorAll<HTMLElement>("[data-carousel]")].map(setUpCarousel);
+  });
+
+  document.addEventListener("astro:before-swap", () => {
+    cleanups.forEach((cleanup) => cleanup());
+    cleanups = [];
+  });
+</script>

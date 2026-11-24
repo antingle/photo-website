@@ -11,23 +11,49 @@ interface Props {
   label: string;
   /** Used when a photo has no "alt" custom metadata in ImageKit. */
   fallbackAlt: string;
+  /** On phones, show one full-width photo per row instead of justified rows. */
+  stackOnPhone?: boolean;
+  /**
+   * On laptops and up, size rows so this many portrait (2:3) photos fill a row,
+   * whatever the screen width, instead of using a fixed row height.
+   */
+  portraitsPerRow?: number;
 }
 
-const { photos, label, fallbackAlt } = Astro.props;
+const { photos, label, fallbackAlt, stackOnPhone = false, portraitsPerRow } = Astro.props;
 
 // Target row heights in px; keep in sync with --row-h below.
 const ROW_H = { phone: 200, desktop: 380 };
+const PORTRAIT_RATIO = 2 / 3;
+// Page side padding (64px × 2) plus the gaps between photos in a row, in px.
+const rowChrome = (n: number) => 128 + (n - 1) * 28;
 
 // Rows stretch to fill the width, so a photo renders up to ~1.4× its target size.
+// Stacked photos on phones span the page minus its 16px side padding.
 const sizesFor = (p: Photo) =>
   [
     "auto",
-    `(max-width: 767px) ${Math.round(p.ratio * ROW_H.phone * 1.4)}px`,
+    stackOnPhone
+      ? "(max-width: 767px) calc(100vw - 32px)"
+      : `(max-width: 767px) ${Math.round(p.ratio * ROW_H.phone * 1.4)}px`,
+    portraitsPerRow
+      ? `(min-width: 1024px) calc((100vw - ${rowChrome(portraitsPerRow)}px) * ${(
+          (p.ratio / (portraitsPerRow * PORTRAIT_RATIO)) *
+          1.15
+        ).toFixed(3)})`
+      : undefined,
     `${Math.round(p.ratio * ROW_H.desktop * 1.4)}px`,
-  ].join(", ");
+  ]
+    .filter(Boolean)
+    .join(", ");
 ---
 
-<div data-gallery aria-label={label} class="gallery">
+<div
+  data-gallery
+  aria-label={label}
+  class:list={["gallery", { stack: stackOnPhone, "fit-portraits": portraitsPerRow }]}
+  style={portraitsPerRow ? `--per-row: ${portraitsPerRow}` : undefined}
+>
   {photos.map((photo) => (
     <a
       href={sized(photo, 2560)}
@@ -75,10 +101,50 @@ const sizesFor = (p: Photo) =>
     aspect-ratio: var(--r);
   }
 
+  /*
+   * Laptops and up: a portrait photo takes 1/n of the row (minus gaps), and
+   * other shapes scale from that, so rows hold at most n portraits. The 1px
+   * keeps rounding from pushing the last photo onto the next row.
+   */
+  @media (min-width: 1024px) {
+    .gallery.fit-portraits > a {
+      flex-basis: calc(
+        var(--r) / (var(--per-row) * 0.6667) * (100% - (var(--per-row) - 1) * var(--gap) - 1px)
+      );
+    }
+  }
+
+  /* One photo per row on phones, at its natural shape. */
+  @media (max-width: 767px) {
+    .gallery.stack > a {
+      flex-basis: 100%;
+    }
+  }
+
   /* Keeps the last, partly filled row at its natural height instead of stretching. */
   .gallery::after {
     content: "";
     flex-grow: 1000000;
+  }
+
+  /*
+   * One-time reveal: photos fade and drift up the first time they scroll into
+   * view (the script sets data-shown). Scrolling itself is never affected.
+   * Without JavaScript, or with Reduce Motion on, photos simply show.
+   */
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .gallery > a {
+      opacity: 0;
+      transform: translateY(16px);
+      transition:
+        opacity 0.8s ease,
+        transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .gallery > a[data-shown] {
+      opacity: 1;
+      transform: none;
+    }
   }
 </style>
 
@@ -88,7 +154,27 @@ const sizesFor = (p: Photo) =>
 
   let lightboxes: PhotoSwipeLightbox[] = [];
 
+  // Reveal each photo once as it enters the viewport; photos arriving together
+  // (e.g. a row on desktop) come in one after another.
+  const reveal = new IntersectionObserver(
+    (entries) => {
+      entries
+        .filter((entry) => entry.isIntersecting)
+        .forEach((entry, i) => {
+          const el = entry.target as HTMLElement;
+          el.style.transitionDelay = `${i * 80}ms`;
+          el.setAttribute("data-shown", "");
+          reveal.unobserve(el);
+        });
+    },
+    { rootMargin: "0px 0px -8% 0px" }
+  );
+
   document.addEventListener("astro:page-load", () => {
+    document
+      .querySelectorAll("[data-gallery] > a:not([data-shown])")
+      .forEach((el) => reveal.observe(el));
+
     lightboxes = [...document.querySelectorAll<HTMLElement>("[data-gallery]")].map((gallery) => {
       const lightbox = new PhotoSwipeLightbox({
         gallery,
@@ -102,6 +188,7 @@ const sizesFor = (p: Photo) =>
   });
 
   document.addEventListener("astro:before-swap", () => {
+    reveal.disconnect();
     lightboxes.forEach((lightbox) => lightbox.destroy());
     lightboxes = [];
   });

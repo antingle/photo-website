@@ -9,10 +9,14 @@ import Verse from "~/components/Verse.astro";
 import BaseLayout from "~/layouts/BaseLayout.astro";
 import { listPhotos } from "~/lib/imagekit";
 
-// The photo named "hero" leads the page; the rest of the folder is the gallery.
-const places = await listPhotos("portfolio/places");
-const hero = places.find((p) => p.name === "hero");
-const gallery = places.filter((p) => p !== hero);
+// Hero carousel: every photo in portfolio/places/hero, in upload order.
+const heroes = (await listPhotos("portfolio/places/hero")).toSorted(
+  (a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt)
+);
+
+// The gallery is the rest of portfolio/places. The old single "hero" file
+// there is skipped; the hero folder replaces it.
+const gallery = (await listPhotos("portfolio/places")).filter((p) => p.name !== "hero");
 ---
 
 <BaseLayout title="Places" current="places" canonical="/">
@@ -30,14 +34,9 @@ const gallery = places.filter((p) => p !== hero);
     </p>
   </Verse>
 
-  {hero && (
-    <Hero
-      photo={hero}
-      alt={hero.alt || "Aerial view of fog drifting over sandstone cliffs, a beach and the ocean"}
-    />
-  )}
+  {heroes.length > 0 && <Hero photos={heroes} fallbackAlt="Landscape photograph" />}
 
-  <section class="px-4 pt-10 md:px-16 md:pt-18">
+  <section class:list={["px-4 md:px-16", heroes.length > 0 ? "pt-10 md:pt-18" : "pt-2 md:pt-4"]}>
     <PhotoGallery photos={gallery} label="Landscapes" fallbackAlt="Landscape photograph" />
   </section>
 </BaseLayout>
