@@ -5,6 +5,7 @@ publishDate: 3-1-2024
 description: Choosing your first camera can be overwhelming, so let me break it down.
 socialImage: https://images.unsplash.com/photo-1501669362114-90c01bd6aeaa?q=80&w=869&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
 ---
+
 ![Lots of cameras](https://images.unsplash.com/photo-1501669362114-90c01bd6aeaa?q=80&w=869&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
 
 You want to get into photography but don't know where to start? There are so many different cameras, some cost $500 while others cost $3000?? Can I even afford one? What is a DSLR? Which brand should I get?
@@ -19,7 +20,7 @@ The first important thing to learn about cameras are the different types. We are
 
 ![Small point and shoot camera](https://images.unsplash.com/photo-1505739998589-00fc191ce01d?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
 
-This type of camera is slim and small. It's designed to be easy enough to use that you can just *point and shoot*. It generally comes with only one type of lens that has a certain optical zoom level and which you cannot detach and swap out (The other 2 camera types are also called interchangeable-lens cameras because the lens can be changed). This camera has become less and less common as our smartphones have become good enough to replace its function of being small and easy to carry around. However, this size factor has also found its place as a very convenient and compact vlogging camera. If you're looking for something like this, [Sony's ZV-1](https://electronics.sony.com/imaging/compact-cameras/all-vlog-compact-cameras/p/dczv1-b) is a great option (pictured above).
+This type of camera is slim and small. It's designed to be easy enough to use that you can just _point and shoot_. It generally comes with only one type of lens that has a certain optical zoom level and which you cannot detach and swap out (The other 2 camera types are also called interchangeable-lens cameras because the lens can be changed). This camera has become less and less common as our smartphones have become good enough to replace its function of being small and easy to carry around. However, this size factor has also found its place as a very convenient and compact vlogging camera. If you're looking for something like this, [Sony's ZV-1](https://electronics.sony.com/imaging/compact-cameras/all-vlog-compact-cameras/p/dczv1-b) is a great option (pictured above).
 
 ### DSLR
 
@@ -65,7 +66,7 @@ If you know you want to take video, choosing a camera with long video recording 
 
 ## Lenses
 
-I'd argue that choosing your lens is way more important than the camera body you decide on. Your camera body is useless without a lens attached to it. People always tend to ask photographers: *what camera do you use?* when they see a cool picture. However, photographers know that's not what's important. It's the lens that enables the picture to look the way it does. However, as a beginner, don't worry too much about your first lens, as you will grow and understand what types of lenses you need for the photography you like to do.
+I'd argue that choosing your lens is way more important than the camera body you decide on. Your camera body is useless without a lens attached to it. People always tend to ask photographers: _what camera do you use?_ when they see a cool picture. However, photographers know that's not what's important. It's the lens that enables the picture to look the way it does. However, as a beginner, don't worry too much about your first lens, as you will grow and understand what types of lenses you need for the photography you like to do.
 
 Note that when picking a lens, you will not be choosing a zoom level such as 2x, 5x, etc. Instead you will be choosing a focal length and f-stop. [Focal length](https://www.nikonusa.com/en/learn-and-explore/a/tips-and-techniques/understanding-focal-length.html#:~:text=The%20focal%20length%20of%20a,and%20the%20higher%20the%20magnification.) is written in millimeters, such as 35mm, 50mm, 85mm, and is technically a measurement from the lens's optical center to the camera's sensor. More importantly it tells us the angle of view of that lens. The higher the focal length, the more narrow angle of view there will be and more zoomed in it will be. F-stop is a measurement of [aperture](https://www.canon-europe.com/pro/infobank/aperture/#:~:text=The%20aperture%20of%20a%20lens,the%20exposure%20of%20the%20image) and tells us how much light the lens lets in. The smaller the f-stop, the more light it lets in.
 

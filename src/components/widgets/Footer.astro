@@ -2,7 +2,7 @@
 import Logo from "~/components/common/Logo.astro";
 import type { Link, SocialLink } from "~/types/links";
 import { NAME } from "~/config";
-import { Icon } from "astro-icon";
+import { Icon } from "astro-icon/components";
 
 export interface Props {
   links?: Array<Link>;
@@ -18,18 +18,14 @@ const { links = [], social = [] } = Astro.props;
       <a href="/" class="flex items-center mb-4 sm:mb-0 justify-center" aria-label="Home">
         <Logo />
       </a>
-      <ul
-        class="flex flex-wrap items-center justify-center mb-6 text-sm text-gray-600 sm:mb-0 gap-4 md:gap-6"
-      >
-        {
-          links.map(({ text, href }) => (
-            <li>
-              <a class="hover:text-gray-900" href={href}>
-                {text}
-              </a>
-            </li>
-          ))
-        }
+      <ul class="flex flex-wrap items-center justify-center mb-6 text-sm text-gray-600 sm:mb-0 gap-4 md:gap-6">
+        {links.map(({ text, href }) => (
+          <li>
+            <a class="hover:text-gray-900" href={href}>
+              {text}
+            </a>
+          </li>
+        ))}
       </ul>
     </div>
 
@@ -41,19 +37,17 @@ const { links = [], social = [] } = Astro.props;
       </span>
 
       <div class="flex mt-4 gap-6 justify-center sm:mt-0">
-        {
-          social.map(({ ariaLabel, href, icon, customClasses }) => (
-            <a
-              href={href}
-              rel="noreferrer"
-              target="_blank"
-              class:list={["text-muted", customClasses]}
-            >
-              <Icon class="w-6 h-6" name={icon} />
-              <span class="sr-only">{ariaLabel}</span>
-            </a>
-          ))
-        }
+        {social.map(({ ariaLabel, href, icon, customClasses }) => (
+          <a
+            href={href}
+            rel="noreferrer"
+            target="_blank"
+            class:list={["text-muted", customClasses]}
+          >
+            <Icon class="w-6 h-6" name={icon} />
+            <span class="sr-only">{ariaLabel}</span>
+          </a>
+        ))}
       </div>
     </div>
   </div>

@@ -6,8 +6,9 @@ import Header from "~/components/widgets/Header.astro";
 import { ACTIONS, LINKS, NAME, SOCIAL, DESCRIPTION, TWITTER_CREATOR } from "~/config";
 import { SEO } from "astro-seo";
 import type { Link } from "~/types/links";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import SpeedInsights from "@vercel/speed-insights/astro";
+import Analytics from "@vercel/analytics/astro";
 
 export interface Props {
   title: string;
@@ -29,10 +30,8 @@ const finalImage = socialImage || "https://anthonyinglephotos.com/social.jpg";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <meta
-      http-equiv="Accept-CH"
-      content="DPR, Width, Downlink, Sec-CH-UA, ECT, Save-Data, RTT"
-    /><!-- enable client hints -->
+    <meta http-equiv="Accept-CH" content="DPR, Width, Downlink, Sec-CH-UA, ECT, Save-Data, RTT" />
+    <!-- enable client hints -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -69,7 +68,8 @@ const finalImage = socialImage || "https://anthonyinglephotos.com/social.jpg";
       }}
     />
     <SpeedInsights />
-    <ViewTransitions />
+    <Analytics />
+    <ClientRouter />
   </head>
   <body>
     <slot name="header">

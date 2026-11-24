@@ -45,7 +45,9 @@ const sizes = [384, 768, 1152];
       <h2 class="text-xl font-semibold text-gray-700">{price}</h2>
     </div>
     <ul class="font-light list-disc pl-5 mb-4">
-      {list?.map((s) => <li>{s}</li>)}
+      {list?.map((s) => (
+        <li>{s}</li>
+      ))}
     </ul>
     <button
       class="btn btn-primary flex"

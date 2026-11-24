@@ -14,14 +14,12 @@ const { frontmatter } = Astro.props;
     <h1>{frontmatter.title}</h1>
     <p>{frontmatter.description}</p>
     <p class="text-sm text-gray-500">
-      {
-        new Date(frontmatter.publishDate).toLocaleDateString("en-US", {
-          weekday: "long",
-          day: "numeric",
-          year: "numeric",
-          month: "long",
-        })
-      }
+      {new Date(frontmatter.publishDate).toLocaleDateString("en-US", {
+        weekday: "long",
+        day: "numeric",
+        year: "numeric",
+        month: "long",
+      })}
     </p>
     <hr />
     <slot />

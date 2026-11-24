@@ -1,10 +1,50 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-:root {
+@theme {
   --color-primary: rgb(17, 24, 39);
   --color-secondary: rgba(17, 24, 39, 0.9);
+}
+
+/* Tailwind v4 compatibility: keep v3 defaults for borders, placeholders and button cursors */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-gray-400);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+/* custom utilities (usable with @apply and variants) */
+@utility text-light {
+  color: var(--color-text-light);
+}
+
+@utility text-muted {
+  color: var(--color-text-muted);
+}
+
+@utility bg-light {
+  background-color: var(--color-bg-light);
+}
+
+@utility bg-light-secondary {
+  background-color: var(--color-bg-light-secondary);
+}
+
+:root {
   --color-text-light: rgb(17 24 39);
   --color-text-muted: rgb(75 85 99);
   --color-bg-light: rgb(255 255 255);
@@ -48,22 +88,6 @@ body > main {
 }
 
 @layer components {
-  .text-light {
-    color: var(--color-text-light);
-  }
-
-  .text-muted {
-    color: var(--color-text-muted);
-  }
-
-  .bg-light {
-    background-color: var(--color-bg-light);
-  }
-
-  .bg-light-secondary {
-    background-color: var(--color-bg-light-secondary);
-  }
-
   .bg-gradient,
   .bg-gradient-secondary {
     background-image: var(--accent-gradient);

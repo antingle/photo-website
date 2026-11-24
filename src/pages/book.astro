@@ -65,7 +65,9 @@ import { generateSrcset } from "~/utils/images";
         style={`animation-delay:${200 * 3 + 100}ms`}
       >
         <img
-          src={"https://ik.imagekit.io/anthonyinglephoto/portfolio/graduation/Copy_of_DSC02666_VIIUdj8vh.jpeg"}
+          src={
+            "https://ik.imagekit.io/anthonyinglephoto/portfolio/graduation/Copy_of_DSC02666_VIIUdj8vh.jpeg"
+          }
           alt={"Group of three graduation photo"}
           class:list={"h-64 sm:w-max sm:h-48 object-cover rounded-xl"}
           sizes="(max-width: 640px) 93vw, 571px"
@@ -86,13 +88,17 @@ import { generateSrcset } from "~/utils/images";
               what you're looking for!
             </p>
           </div>
-          <a href="/contact" class="btn btn-ghost flex"> Contact Me</a>
+          <a href="/contact" class="btn btn-ghost flex">
+            {" "}
+            Contact Me
+          </a>
         </div>
       </article>
     </div>
 
     <!-- Cal element-click embed code begins -->
     <script type="text/javascript">
+      /* eslint-disable -- vendor snippet pasted from Cal.com */
       (function (C, A, L) {
         let p = function (a, ar) {
           a.q.push(ar);
@@ -121,13 +127,12 @@ import { generateSrcset } from "~/utils/images";
             p(cal, ar);
           };
       })(window, "https://app.cal.com/embed/embed.js", "init");
-      Cal("init", { origin: "https://cal.com" }); // eslint-disable-line
+      Cal("init", { origin: "https://cal.com" });
 
       // Important: Please add following attributes to the element you want to open Cal on click
       // `data-cal-link="anthonyinglephotos/grad-photo-session"`
       // `data-cal-config='{"layout":"month_view"}'`
 
-      // eslint-disable-next-line
       Cal("ui", {
         theme: "light",
         styles: { branding: { brandColor: "#111827" } },

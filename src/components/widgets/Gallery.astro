@@ -6,6 +6,11 @@ import type { IKImage } from "~/types/api";
 const { gallery: selectedGallery } = Astro.params; // grab gallery string from url
 
 const key = import.meta.env.IK_PRIVATE_KEY || "";
+if (!key) {
+  throw new Error(
+    "IK_PRIVATE_KEY is not set. Add it to .env (see .env.example) to load galleries."
+  );
+}
 // fetch imagekit photos from portfolio folder
 const res = await fetch(`https://api.imagekit.io/v1/files?path=portfolio/${selectedGallery}`, {
   method: "GET",
@@ -65,34 +70,32 @@ for (let i = 1.0; i < 3.5; i += 0.5) {
 ---
 
 <div id="gallery" class="grid max-w-screen-2xl m-auto min-h-screen" transition:animate="fade">
-  {
-    data?.map((photo) => {
-      let srcset = generateSrcset(srcsetSizes, photo.url);
+  {data?.map((photo) => {
+    let srcset = generateSrcset(srcsetSizes, photo.url);
 
-      return (
-        <div id="photo" class="grid-item ">
-          <a
-            id="photo"
-            class="block rounded-md overflow-hidden slidein-intersect cursor-zoom-in relative"
-            data-pswp-src={`${photo.url}?tr=w-${mConfig.columnSize},q-30`}
-            data-pswp-srcset={srcset}
-            data-pswp-width={photo.width}
-            data-pswp-height={photo.height}
-          >
-            <img
-              class="lazyload blurred hover:scale-[1.03]"
-              src={`${photo.url}?tr=w-${mConfig.columnSize},q-30`}
-              data-sizes={sizes}
-              data-srcset={srcset}
-              alt={photo.name}
-              width={photo.width}
-              height={photo.height}
-            />
-          </a>
-        </div>
-      );
-    })
-  }
+    return (
+      <div id="photo" class="grid-item">
+        <a
+          id="photo"
+          class="block rounded-md overflow-hidden slidein-intersect cursor-zoom-in relative"
+          data-pswp-src={`${photo.url}?tr=w-${mConfig.columnSize},q-30`}
+          data-pswp-srcset={srcset}
+          data-pswp-width={photo.width}
+          data-pswp-height={photo.height}
+        >
+          <img
+            class="lazyload blurred hover:scale-[1.03]"
+            src={`${photo.url}?tr=w-${mConfig.columnSize},q-30`}
+            data-sizes={sizes}
+            data-srcset={srcset}
+            alt={photo.name}
+            width={photo.width}
+            height={photo.height}
+          />
+        </a>
+      </div>
+    );
+  })}
 </div>
 <style>
   /* ---- old masonry layout ----
@@ -124,7 +127,7 @@ for (let i = 1.0; i < 3.5; i += 0.5) {
   import "photoswipe/style.css";
 
   // create masonry layout
-  let masonryOptions: MiniMasonryOptions = {
+  const masonryOptions: MiniMasonryOptions = {
     container: ".grid",
     baseWidth: 300,
     gutter: 16,
@@ -134,7 +137,7 @@ for (let i = 1.0; i < 3.5; i += 0.5) {
   masonry.layout();
 
   // create lightbox (for clicking images)
-  let lightboxOptions = {
+  const lightboxOptions = {
     bgOpacity: 0.9,
     gallery: "#gallery",
     children: "a",
