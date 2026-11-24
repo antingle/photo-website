@@ -6,9 +6,16 @@ import tailwindcss from "@tailwindcss/vite";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Absolute URLs (link-preview images, canonical links) must point at the site
+// that's actually serving the page. Vercel preview builds use their own branch
+// URL; production and local builds use the real domain.
+const { VERCEL_ENV, VERCEL_BRANCH_URL, VERCEL_URL } = process.env;
+const previewHost = VERCEL_ENV === "preview" ? (VERCEL_BRANCH_URL ?? VERCEL_URL) : undefined;
+const site = previewHost ? `https://${previewHost}` : "https://anthonyinglephotos.com";
+
 // https://astro.build/config
 export default defineConfig({
-  site: "https://anthonyinglephotos.com",
+  site,
   // Every page is prerendered at build time (galleries refresh on redeploy).
   output: "static",
   adapter: vercel(),
