@@ -86,14 +86,6 @@ export function srcset(photo: Photo): string {
   ].join(", ");
 }
 
-/**
- * 1200×630 JPEG for link previews (iMessage, Instagram DMs, Facebook…). Forced to
- * JPEG because not every app that renders previews supports WebP/AVIF.
- */
-export function socialImage(photo: Photo): string {
-  return transform(photo.url, "w-1200,h-630,fo-auto,f-jpg,q-85");
-}
-
 /** Tiny blurred version, shown as a background while the real image loads. */
 export function placeholder(photo: Photo): string {
   return transform(photo.url, "w-24,bl-6,q-40");

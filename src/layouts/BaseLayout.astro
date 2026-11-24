@@ -12,14 +12,13 @@ import { ClientRouter } from "astro:transitions";
 import Footer from "~/components/Footer.astro";
 import Header from "~/components/Header.astro";
 import { DESCRIPTION, NAME, TWITTER_CREATOR, type PageKey } from "~/config";
-import { getPhoto, socialImage as socialImageOf } from "~/lib/imagekit";
 
 interface Props {
   title: string;
   description?: string;
   /** Use the post title on its own (blog posts) instead of "Title | Name". */
   blogTitle?: string;
-  /** Link-preview image URL. Defaults to the Places hero photo. */
+  /** Link-preview image URL. Defaults to /og.jpg (1200×630). */
   socialImage?: string;
   socialImageAlt?: string;
   current?: PageKey;
@@ -33,12 +32,12 @@ const { title, description, blogTitle, socialImage, socialImageAlt, current, can
 const finalTitle = blogTitle ?? `${title} | ${NAME}`;
 const finalDescription = description ?? DESCRIPTION;
 
-// Default link preview: the hero photo, cropped by ImageKit to 1200×630.
-const hero = socialImage ? undefined : await getPhoto("portfolio/places", "hero");
-const finalImage = socialImage ?? socialImageOf(hero!);
+// Default link preview: the camera + wordmark over a mountain sketch.
+const isDefaultImage = !socialImage;
+const finalImage = socialImage ?? new URL("/og.jpg", Astro.site ?? Astro.url).href;
 const finalImageAlt =
   socialImageAlt ??
-  (hero ? hero.alt || "Aerial view of fog drifting over coastal cliffs and the ocean" : undefined);
+  (isDefaultImage ? `${NAME}, with a camera sketch over light drawn mountains` : undefined);
 ---
 
 <!doctype html>
@@ -61,7 +60,7 @@ const finalImageAlt =
       openGraph={{
         basic: { title: finalTitle, type: "website", image: finalImage },
         optional: { description: finalDescription, siteName: NAME },
-        image: hero
+        image: isDefaultImage
           ? { type: "image/jpeg", width: 1200, height: 630, alt: finalImageAlt }
           : { alt: finalImageAlt },
       }}
