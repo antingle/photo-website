@@ -1,0 +1,108 @@
+---
+/**
+ * Justified-rows gallery: every photo in a row shares one height and the rows
+ * fill the width, laid out by CSS alone (flex-grow proportional to each
+ * photo's aspect ratio). Clicking a photo opens it in a PhotoSwipe lightbox.
+ */
+import { placeholder, sized, srcset, type Photo } from "~/lib/imagekit";
+
+interface Props {
+  photos: Photo[];
+  label: string;
+  /** Used when a photo has no "alt" custom metadata in ImageKit. */
+  fallbackAlt: string;
+}
+
+const { photos, label, fallbackAlt } = Astro.props;
+
+// Target row heights in px; keep in sync with --row-h below.
+const ROW_H = { phone: 200, desktop: 380 };
+
+// Rows stretch to fill the width, so a photo renders up to ~1.4× its target size.
+const sizesFor = (p: Photo) =>
+  [
+    "auto",
+    `(max-width: 767px) ${Math.round(p.ratio * ROW_H.phone * 1.4)}px`,
+    `${Math.round(p.ratio * ROW_H.desktop * 1.4)}px`,
+  ].join(", ");
+---
+
+<div data-gallery aria-label={label} class="gallery">
+  {photos.map((photo) => (
+    <a
+      href={sized(photo, 2560)}
+      data-pswp-width={photo.width}
+      data-pswp-height={photo.height}
+      data-pswp-srcset={srcset(photo)}
+      class="relative overflow-hidden bg-well"
+      style={`--r: ${photo.ratio.toFixed(4)}`}
+    >
+      <img
+        src={sized(photo, 800)}
+        srcset={srcset(photo)}
+        sizes={sizesFor(photo)}
+        width={photo.width}
+        height={photo.height}
+        alt={photo.alt || fallbackAlt}
+        loading="lazy"
+        decoding="async"
+        class="block size-full bg-cover object-cover"
+        style={`background-image: url(${placeholder(photo)})`}
+      />
+    </a>
+  ))}
+</div>
+
+<style>
+  .gallery {
+    --row-h: 200px;
+    --gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap);
+  }
+
+  @media (min-width: 768px) {
+    .gallery {
+      --row-h: 380px;
+      --gap: 28px;
+    }
+  }
+
+  .gallery > a {
+    flex-grow: calc(var(--r) * 100);
+    flex-basis: calc(var(--r) * var(--row-h));
+    aspect-ratio: var(--r);
+  }
+
+  /* Keeps the last, partly filled row at its natural height instead of stretching. */
+  .gallery::after {
+    content: "";
+    flex-grow: 1000000;
+  }
+</style>
+
+<script>
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+  import "photoswipe/style.css";
+
+  let lightboxes: PhotoSwipeLightbox[] = [];
+
+  document.addEventListener("astro:page-load", () => {
+    lightboxes = [...document.querySelectorAll<HTMLElement>("[data-gallery]")].map((gallery) => {
+      const lightbox = new PhotoSwipeLightbox({
+        gallery,
+        children: "a",
+        bgOpacity: 0.97,
+        pswpModule: () => import("photoswipe"),
+      });
+      lightbox.init();
+      return lightbox;
+    });
+  });
+
+  document.addEventListener("astro:before-swap", () => {
+    lightboxes.forEach((lightbox) => lightbox.destroy());
+    lightboxes = [];
+  });
+</script>

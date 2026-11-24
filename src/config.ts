@@ -1,76 +1,14 @@
-import type { ActionLink, MenuLink, SocialLink } from "~/types/links";
-const LINKS: MenuLink[] = [
-  { text: "Gallery", href: "/gallery/graduation" },
-  { text: "About", href: "/about" },
-  { text: "Blog", href: "/blog" },
-  { text: "Contact", href: "/contact" },
+export const NAME = "Anthony Ingle";
+export const DESCRIPTION = "Landscape and portrait photography by Anthony Ingle.";
+export const TWITTER_CREATOR = "@ingleant";
+
+export type PageKey = "places" | "people" | "about";
+
+export const LINKS: { key: PageKey; text: string; href: string }[] = [
+  { key: "places", text: "Places", href: "/places" },
+  { key: "people", text: "People", href: "/people" },
+  { key: "about", text: "About", href: "/about" },
 ];
 
-const ACTIONS: ActionLink[] = [{ text: "Book", href: "/book", type: "primary" }];
-
-const SOCIAL: SocialLink[] = [
-  {
-    icon: "mdi:facebook",
-    ariaLabel: "Facebook Page",
-    href: "https://www.facebook.com/anthonyinglephotography",
-    customClasses: ["hover:text-blue-600"],
-  },
-  {
-    icon: "mdi:instagram",
-    ariaLabel: "Instagram Page",
-    href: "https://www.instagram.com/ant.ing/",
-    customClasses: ["hover:text-fuchsia-600"],
-  },
-  // {
-  //   icon: "ic:baseline-tiktok",
-  //   ariaLabel: "TikTok Profile",
-  //   href: "https://www.tiktok.com/@ant.photos",
-  //   customClasses: ["hover:text-black"],
-  // },
-  {
-    icon: "ri:youtube-fill",
-    ariaLabel: "Youtube Shorts Page",
-    href: "https://www.youtube.com/@antphotos/shorts",
-    customClasses: ["hover:text-red-500"],
-  },
-  {
-    icon: "mdi:github",
-    ariaLabel: "Github Account",
-    href: "https://www.github.com/antingle/photo-website",
-    customClasses: ["hover:text-slate-800"],
-  },
-];
-
-const CONTACT: SocialLink[] = [
-  {
-    icon: "mdi:facebook",
-    ariaLabel: "Facebook Page",
-    href: "https://www.facebook.com/anthonyinglephotography",
-    customClasses: ["hover:text-blue-600"],
-  },
-  {
-    icon: "mdi:instagram",
-    ariaLabel: "Instagram Page",
-    href: "https://www.instagram.com/ant.ing/",
-    customClasses: ["hover:text-fuchsia-600"],
-  },
-  {
-    icon: "ic:baseline-phone",
-    ariaLabel: "Phone Number",
-    href: "tel:7273310866",
-    customClasses: ["hover:text-gray-600"],
-  },
-  {
-    icon: "ic:round-mail-outline",
-    ariaLabel: "Email",
-    href: "mailto:anthony@anthonyinglephotos.com",
-    customClasses: ["hover:text-cyan-500"],
-  },
-];
-
-const NAME = "Anthony Ingle Photography";
-const DESCRIPTION =
-  "Anthony Ingle is a photographer located in Tallahassee, Florida and the Florida State University area. Book a session today!";
-const TWITTER_CREATOR = "@ingleant";
-
-export { LINKS, NAME, DESCRIPTION, SOCIAL, ACTIONS, CONTACT, TWITTER_CREATOR };
+export const INSTAGRAM = "https://www.instagram.com/ant.ing/";
+export const EMAIL = "anthony@anthonyinglephotos.com";

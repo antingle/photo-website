@@ -1,0 +1,127 @@
+---
+import SocialLinks from "~/components/SocialLinks.astro";
+import Wordmark from "~/components/Wordmark.astro";
+import { LINKS, type PageKey } from "~/config";
+
+interface Props {
+  current?: PageKey;
+}
+
+const { current } = Astro.props;
+---
+
+<header
+  data-site-header
+  class="sticky top-2 z-50 mx-2.5 mt-2 rounded-[18px] border border-transparent bg-paper transition-[background-color,border-color,box-shadow] duration-250 data-scrolled:border-white/55 data-scrolled:bg-paper/62 data-scrolled:shadow-[inset_0_1px_0_rgb(255_255_255/0.85),0_1px_0_rgb(22_22_22/0.06),0_10px_28px_rgb(22_22_22/0.1)] data-scrolled:backdrop-blur-[22px] data-scrolled:backdrop-saturate-170 motion-reduce:transition-none md:top-3.5 md:mx-6 md:mt-3.5 md:rounded-[22px]"
+>
+  <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-6 py-1 pr-1 pl-4 md:px-7 md:py-3">
+    <nav aria-label="Main" class="hidden md:block">
+      <ul class="flex list-none gap-7 text-[15px]">
+        {LINKS.map(({ key, text, href }) => (
+          <li>
+            <a
+              href={href}
+              aria-current={key === current ? "page" : undefined}
+              class:list={[
+                "transition-colors hover:text-ink",
+                key === current ? "text-ink" : "text-muted",
+              ]}
+            >
+              {text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <Wordmark class="col-start-1 md:col-start-2 md:justify-self-center" />
+
+    <div class="col-start-3 flex justify-end">
+      <SocialLinks class="hidden md:flex" />
+      <button
+        type="button"
+        data-menu-open
+        aria-label="Open menu"
+        aria-haspopup="dialog"
+        class="inline-flex size-12 items-center justify-center md:hidden"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          aria-hidden="true"
+        >
+          <path d="M4 9h16M4 15h16"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <dialog
+    data-menu
+    aria-label="Menu"
+    class="fixed inset-0 m-0 h-dvh border-0 max-h-none w-full max-w-none flex-col bg-paper/86 px-4 pt-3.5 pb-10 text-ink backdrop-blur-[24px] backdrop-saturate-170 backdrop:bg-transparent open:flex"
+  >
+    <div class="flex items-center justify-between pl-3.5">
+      <Wordmark href={null} />
+      <button
+        type="button"
+        data-menu-close
+        aria-label="Close menu"
+        class="inline-flex size-12 items-center justify-center"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          aria-hidden="true"
+        >
+          <path d="M6 6l12 12M18 6L6 18"></path>
+        </svg>
+      </button>
+    </div>
+    <nav aria-label="Main" class="mt-16 pl-3.5">
+      <ul class="flex list-none flex-col gap-1.5 font-serif text-[44px] leading-tight">
+        {LINKS.map(({ key, text, href }) => (
+          <li>
+            <a
+              href={href}
+              aria-current={key === current ? "page" : undefined}
+              class={key === current ? "text-ink" : "text-muted"}
+            >
+              {text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <SocialLinks class="mt-auto gap-2" iconSize={22} />
+  </dialog>
+</header>
+
+<script>
+  // Turn the header into frosted glass once the page scrolls; plain white at the top.
+  const updateHeader = () =>
+    document
+      .querySelector("[data-site-header]")
+      ?.toggleAttribute("data-scrolled", window.scrollY > 8);
+
+  window.addEventListener("scroll", updateHeader, { passive: true });
+
+  document.addEventListener("astro:page-load", () => {
+    updateHeader();
+
+    const menu = document.querySelector<HTMLDialogElement>("[data-menu]");
+    if (!menu) return;
+    document.querySelector("[data-menu-open]")?.addEventListener("click", () => menu.showModal());
+    menu
+      .querySelectorAll("[data-menu-close], a")
+      .forEach((el) => el.addEventListener("click", () => menu.close()));
+  });
+</script>

@@ -1,0 +1,43 @@
+---
+/**
+ * The Places page. Served at both "/" and "/places"; both declare "/" as the
+ * canonical URL so search engines treat them as one page.
+ */
+import Hero from "~/components/Hero.astro";
+import PhotoGallery from "~/components/PhotoGallery.astro";
+import Verse from "~/components/Verse.astro";
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { listPhotos } from "~/lib/imagekit";
+
+// The photo named "hero" leads the page; the rest of the folder is the gallery.
+const places = await listPhotos("portfolio/places");
+const hero = places.find((p) => p.name === "hero");
+const gallery = places.filter((p) => p !== hero);
+---
+
+<BaseLayout title="Places" current="places" canonical="/">
+  <h1 class="sr-only">Places — landscape photography by Anthony Ingle</h1>
+
+  <Verse reference="Psalm 121:1–2">
+    <p>
+      I lift my eyes toward the mountains.
+      <br />
+      Where will my help come from?
+    </p>
+    <p>
+      My help comes from the <span class="lord">Lord</span>,<br />
+      the Maker of heaven and earth.
+    </p>
+  </Verse>
+
+  {hero && (
+    <Hero
+      photo={hero}
+      alt={hero.alt || "Aerial view of fog drifting over sandstone cliffs, a beach and the ocean"}
+    />
+  )}
+
+  <section class="px-4 pt-10 md:px-16 md:pt-18">
+    <PhotoGallery photos={gallery} label="Landscapes" fallbackAlt="Landscape photograph" />
+  </section>
+</BaseLayout>

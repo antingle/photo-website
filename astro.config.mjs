@@ -3,16 +3,15 @@ import { fileURLToPath } from "url";
 import { defineConfig } from "astro/config";
 import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
-import icon from "astro-icon";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [icon()],
-  // Pages are prerendered by default; contact.astro opts out with `prerender = false`.
+  site: "https://anthonyinglephotos.com",
+  // Every page is prerendered at build time (galleries refresh on redeploy).
   output: "static",
-  adapter: vercel({ imageService: true }),
+  adapter: vercel(),
   // Astro 7 defaults to JSX-style whitespace collapsing; keep the old HTML behavior.
   compressHTML: true,
   vite: {
@@ -23,8 +22,13 @@ export default defineConfig({
       },
     },
   },
+  // Old URLs from the previous site.
   redirects: {
-    "/": "/gallery/graduation", // this is not ideal, but its for logical navigation in gallery
-    "/gallery": "/gallery/graduation",
+    "/gallery": "/people",
+    "/gallery/graduation": "/people#graduation",
+    "/gallery/portraits": "/people#portraits",
+    "/gallery/family": "/people#families",
+    "/book": "/people",
+    "/contact": "/about",
   },
 });

@@ -2,238 +2,51 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-primary: rgb(17, 24, 39);
-  --color-secondary: rgba(17, 24, 39, 0.9);
+  --color-paper: #fafaf8;
+  --color-ink: #161616;
+  --color-soft: #2a2a27;
+  --color-muted: #6a6a65;
+  --color-line: #e4e3de;
+  --color-rule: #c9c8c1;
+  --color-well: #ecebe6;
+
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Instrument Sans Variable", system-ui, sans-serif;
 }
 
-/* Tailwind v4 compatibility: keep v3 defaults for borders, placeholders and button cursors */
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
-
-  input::placeholder,
-  textarea::placeholder {
-    color: var(--color-gray-400);
-  }
-
-  button:not(:disabled),
-  [role="button"]:not(:disabled) {
-    cursor: pointer;
-  }
-}
-
-/* custom utilities (usable with @apply and variants) */
-@utility text-light {
-  color: var(--color-text-light);
-}
-
-@utility text-muted {
-  color: var(--color-text-muted);
-}
-
-@utility bg-light {
-  background-color: var(--color-bg-light);
-}
-
-@utility bg-light-secondary {
-  background-color: var(--color-bg-light-secondary);
-}
-
-:root {
-  --color-text-light: rgb(17 24 39);
-  --color-text-muted: rgb(75 85 99);
-  --color-bg-light: rgb(255 255 255);
-  --color-bg-light-secondary: rgb(241, 245, 249);
-}
-
-html {
-  overflow-y: scroll;
-}
-
-@supports (scrollbar-gutter: stable) {
   html {
-    overflow-y: auto;
     scrollbar-gutter: stable;
   }
+
+  /* Keep the page from scrolling behind the open phone menu. */
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  body {
+    @apply flex min-h-screen flex-col bg-paper font-sans text-ink antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
 }
 
-body {
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+/* "Lord" in scripture, set in small capitals the way printed Bibles do. */
+@utility lord {
+  font-style: normal;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
 }
 
-body > main {
-  flex: 1;
-}
-
-/* for photoswipe package */
-.pswp__bg {
-  background: white !important;
-}
-
-/* counter text */
+/* PhotoSwipe lightbox: light, like the rest of the site. */
 .pswp {
-  /* first color is tailwind gray 600 */
-  --pswp-icon-color: #4b5563 !important;
-  --pswp-icon-color-secondary: white !important;
-}
-
-@layer components {
-  .bg-gradient,
-  .bg-gradient-secondary {
-    background-image: var(--accent-gradient);
-    background-size: 400%;
-    background-position: 100%;
-    transition:
-      background-position 1s cubic-bezier(0.22, 1, 0.36, 1),
-      color 1s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .bg-gradient-secondary {
-    background-image: var(--accent-gradient-secondary);
-  }
-
-  .text-gradient {
-    background-image: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 400%;
-    background-position: 10%;
-    transition: background-position 1s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .bg-gradient:is(:hover, :focus-within),
-  .bg-gradient-secondary:is(:hover, :focus-within),
-  .text-gradient:is(:hover, :focus-within) {
-    background-position: 0;
-  }
-
-  .btn {
-    @apply inline-flex items-center justify-center rounded-2xl shadow-md border-gray-400 box-border border-2 bg-transparent font-medium text-center text-base text-light leading-snug py-3.5 px-6 md:px-8 ease-in duration-200 focus:ring-blue-500 focus:ring-offset-blue-200 focus:ring-2 focus:ring-offset-2 hover:bg-gray-100 hover:border-gray-600;
-  }
-
-  .btn-ghost {
-    @apply shadow-none text-gray-900 hover:text-white hover:bg-gray-900 border-gray-900 hover:border-gray-900 active:bg-gray-900/80 active:border-gray-900/80;
-  }
-
-  .btn-primary {
-    @apply bg-gray-900 text-white border-none hover:bg-gray-900/90 active:bg-gray-900/80;
-  }
-
-  .btn-inverted {
-    @apply bg-light text-light border-none hover:bg-white/90 active:bg-white/80;
-  }
-}
-
-[data-toggle-nav] path {
-  @apply transition;
-}
-[data-toggle-nav].expanded g > path:first-child {
-  @apply -rotate-45 translate-y-[15px] translate-x-[-3px];
-}
-
-[data-toggle-nav].expanded g > path:last-child {
-  @apply rotate-45 translate-y-[-8px] translate-x-[14px];
-}
-
-.scroll {
-  @apply shadow-xl;
-}
-
-@keyframes slidein {
-  from {
-    transform: translateY(5%);
-    opacity: 0%;
-  }
-  to {
-    transform: translateY(0%);
-    opacity: 100%;
-  }
-}
-
-@keyframes slidein-links {
-  from {
-    transform: translateY(20%);
-    opacity: 0%;
-  }
-  to {
-    transform: translateY(0%);
-    opacity: 100%;
-  }
-}
-
-@keyframes slidein-links-reverse {
-  from {
-    transform: translateY(0%);
-    opacity: 100%;
-  }
-  to {
-    transform: translateY(-20%);
-    opacity: 0%;
-  }
-}
-
-@keyframes fadein-links {
-  from {
-    opacity: 0%;
-  }
-  to {
-    opacity: 100%;
-  }
-}
-
-@keyframes fadein-links-reverse {
-  from {
-    opacity: 100%;
-  }
-  to {
-    opacity: 0%;
-  }
-}
-
-.slidein-intersect {
-  opacity: 0%;
-}
-
-.animate-slidein {
-  animation: slidein 1s forwards;
-}
-
-.slidein-links {
-  animation: slidein-links 0.25s forwards;
-}
-
-.fadein-links {
-  animation: fadein-links 0.5s forwards;
-}
-
-.slidein-links-reverse {
-  animation: slidein-links-reverse 0.25s forwards;
-}
-
-.fadein-links-reverse {
-  animation: fadein-links-reverse 0.25s forwards;
-}
-
-/* lazyloading and blurring */
-.blurred {
-  transition: all 300ms;
-}
-
-.blurred.lazyload,
-.blurred.lazyloading {
-  filter: blur(10px);
-}
-
-.blurred.lazyloaded {
-  filter: blur(0px);
+  --pswp-bg: var(--color-paper);
+  --pswp-placeholder-bg: var(--color-well);
+  --pswp-icon-color: var(--color-ink);
+  --pswp-icon-color-secondary: var(--color-paper);
+  --pswp-icon-stroke-color: var(--color-paper);
+  --pswp-icon-stroke-width: 0;
 }

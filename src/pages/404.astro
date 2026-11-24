@@ -1,13 +1,16 @@
 ---
-import Layout from "~/layouts/BaseLayout.astro";
+import BaseLayout from "~/layouts/BaseLayout.astro";
 ---
 
-<Layout title={"Page Not Found"}>
-  <main class="flex items-center justify-center flex-col">
-    <h1 class="font-bold text-3xl">Uh Oh!</h1>
-    <p class="font-base mb-8">There's nothing here :(</p>
-    <a href="/" class="btn btn-primary">
-      Go Back Home
+<BaseLayout title="Page not found">
+  <section class="flex flex-col items-center px-6 pt-24 text-center md:pt-32">
+    <h1 class="font-serif text-5xl">Nothing here</h1>
+    <p class="mt-3 text-muted">This page doesn't exist, or it moved.</p>
+    <a
+      href="/places"
+      class="mt-8 inline-flex min-h-12 items-center bg-ink px-6 font-medium text-paper hover:bg-ink/85"
+    >
+      Back to Places
     </a>
-  </main>
-</Layout>
+  </section>
+</BaseLayout>

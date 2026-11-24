@@ -1,6 +1,4 @@
 ---
-import { Icon } from "astro-icon/components";
-
 export interface Props {
   title: string;
   description: string;
@@ -22,7 +20,16 @@ const { title, description, image, imageAlt, href } = Astro.props;
     <p>{description}</p>
     <p class="flex justify-end items-center text-gray-600">
       <span>Read More</span>
-      <Icon class="inline ml-1 w-5 h-5" name="mdi:arrow-right" />
+      <svg
+        class="ml-1 inline size-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        aria-hidden="true"
+      >
+        <path d="M5 12h14M13 6l6 6-6 6"></path>
+      </svg>
     </p>
   </div>
 </a>

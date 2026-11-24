@@ -1,0 +1,41 @@
+---
+import PhotoGallery from "~/components/PhotoGallery.astro";
+import SectionHeading from "~/components/SectionHeading.astro";
+import Verse from "~/components/Verse.astro";
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { listPhotos } from "~/lib/imagekit";
+
+const sections = [
+  { id: "portraits", title: "Portraits", folder: "portfolio/portraits" },
+  { id: "couples", title: "Couples", folder: "portfolio/couples" },
+  { id: "graduation", title: "Graduation", folder: "portfolio/graduation" },
+  { id: "families", title: "Families", folder: "portfolio/family" },
+];
+
+const withPhotos = await Promise.all(
+  sections.map(async (section) => ({ ...section, photos: await listPhotos(section.folder) }))
+);
+---
+
+<BaseLayout title="People" current="people">
+  <h1 class="sr-only">People — portrait photography by Anthony Ingle</h1>
+
+  <Verse reference="Isaiah 64:8">
+    <p>
+      Yet <span class="lord">Lord</span>, you are our Father;
+      <br />
+      we are the clay, and you are our potter;
+      <br />
+      we all are the work of your hands.
+    </p>
+  </Verse>
+
+  <div class="flex flex-col gap-20 px-4 md:gap-28 md:px-16">
+    {withPhotos.map(({ id, title, photos }) => (
+      <section aria-labelledby={id}>
+        <SectionHeading id={id}>{title}</SectionHeading>
+        <PhotoGallery photos={photos} label={title} fallbackAlt={`${title} photograph`} />
+      </section>
+    ))}
+  </div>
+</BaseLayout>

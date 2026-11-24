@@ -1,0 +1,39 @@
+---
+/**
+ * A quiet, centered sign-off. The short rule echoes the ones around each
+ * verse reference, so the footer reads as part of the same design.
+ */
+import SocialLinks from "~/components/SocialLinks.astro";
+import Wordmark from "~/components/Wordmark.astro";
+import { LINKS, NAME } from "~/config";
+---
+
+<footer class="mt-28 flex flex-col items-center px-6 pb-10 text-center md:mt-40 md:pb-12">
+  <span aria-hidden="true" class="block h-px w-10 bg-rule"></span>
+
+  <Wordmark class="mt-10" />
+
+  <nav aria-label="Footer" class="mt-5">
+    <ul class="flex list-none flex-wrap justify-center gap-x-8 gap-y-2 text-[15px] text-muted">
+      {LINKS.map(({ text, href }) => (
+        <li>
+          <a href={href} class="transition-colors hover:text-ink">
+            {text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <SocialLinks class="mt-3" />
+
+  <div class="mt-10 max-w-md space-y-1 text-[11px]/relaxed text-muted/75">
+    <p>
+      &copy; {new Date().getFullYear()} {NAME}
+    </p>
+    <p>
+      Scripture quotations are from the Christian Standard Bible®, Copyright © 2017 by Holman Bible
+      Publishers. Used by permission.
+    </p>
+  </div>
+</footer>

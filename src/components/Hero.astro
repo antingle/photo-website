@@ -1,0 +1,26 @@
+---
+import { placeholder, sized, srcset, type Photo } from "~/lib/imagekit";
+
+interface Props {
+  photo: Photo;
+  alt: string;
+}
+
+const { photo, alt } = Astro.props;
+---
+
+<figure>
+  <img
+    src={sized(photo, 1920)}
+    srcset={srcset(photo)}
+    sizes="100vw"
+    width={photo.width}
+    height={photo.height}
+    alt={alt}
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+    class="block h-[78svh] w-full bg-well bg-cover object-cover object-[58%_center] md:h-[clamp(480px,88vh,980px)] md:object-center"
+    style={`background-image: url(${placeholder(photo)})`}
+  />
+</figure>

@@ -1,70 +1,62 @@
 ---
+import "@fontsource/cormorant-garamond/400.css";
+import "@fontsource/cormorant-garamond/400-italic.css";
+import "@fontsource/cormorant-garamond/500.css";
+import "@fontsource-variable/instrument-sans/wght.css";
 import "~/styles/base.css";
-import BasicScripts from "~/components/common/BasicScripts.astro";
-import Footer from "~/components/widgets/Footer.astro";
-import Header from "~/components/widgets/Header.astro";
-import { ACTIONS, LINKS, NAME, SOCIAL, DESCRIPTION, TWITTER_CREATOR } from "~/config";
-import { SEO } from "astro-seo";
-import type { Link } from "~/types/links";
-import { ClientRouter } from "astro:transitions";
-import SpeedInsights from "@vercel/speed-insights/astro";
-import Analytics from "@vercel/analytics/astro";
 
-export interface Props {
+import Analytics from "@vercel/analytics/astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
+import { SEO } from "astro-seo";
+import { ClientRouter } from "astro:transitions";
+import Footer from "~/components/Footer.astro";
+import Header from "~/components/Header.astro";
+import { DESCRIPTION, NAME, TWITTER_CREATOR, type PageKey } from "~/config";
+
+interface Props {
   title: string;
   description?: string;
+  /** Use the post title on its own (blog posts) instead of "Title | Name". */
   blogTitle?: string;
   socialImage?: string;
+  current?: PageKey;
+  /** Path of the page search engines should index, when the same page lives at several URLs. */
+  canonical?: string;
 }
 
-const { title, description, blogTitle = null, socialImage = null } = Astro.props;
+const { title, description, blogTitle, socialImage, current, canonical } = Astro.props;
 
-const finalTitle = blogTitle ? `${blogTitle}` : `${NAME} | ${title}`;
-const finalDescription = description || DESCRIPTION;
-const finalImage = socialImage || "https://anthonyinglephotos.com/social.jpg";
+const finalTitle = blogTitle ?? `${title} | ${NAME}`;
+const finalDescription = description ?? DESCRIPTION;
+const finalImage = socialImage ?? new URL("/social.jpg", Astro.site ?? Astro.url).href;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta http-equiv="Accept-CH" content="DPR, Width, Downlink, Sec-CH-UA, ECT, Save-Data, RTT" />
-    <!-- enable client hints -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#000000" />
-    <meta name="msapplication-TileColor" content="#000000" />
-    <meta name="theme-color" content="#ffffff" />
+    <link rel="preconnect" href="https://ik.imagekit.io" />
+    <meta name="theme-color" content="#fafaf8" />
 
     <SEO
       title={finalTitle}
       description={finalDescription}
-      openGraph={{
-        basic: {
-          title: finalTitle,
-          type: "website",
-          image: finalImage,
-        },
-      }}
+      canonical={canonical ? new URL(canonical, Astro.site ?? Astro.url) : undefined}
+      openGraph={{ basic: { title: finalTitle, type: "website", image: finalImage } }}
       twitter={{
+        card: "summary_large_image",
         creator: TWITTER_CREATOR,
-      }}
-      extend={{
-        // extending the default meta tags
-        meta: [
-          {
-            name: "twitter:image",
-            content: finalImage,
-          },
-          { name: "twitter:title", content: finalTitle },
-          { name: "twitter:description", content: finalDescription },
-        ],
+        title: finalTitle,
+        description: finalDescription,
+        image: finalImage,
       }}
     />
     <SpeedInsights />
@@ -72,15 +64,10 @@ const finalImage = socialImage || "https://anthonyinglephotos.com/social.jpg";
     <ClientRouter />
   </head>
   <body>
-    <slot name="header">
-      <Header isSticky links={LINKS} actions={ACTIONS} />
-    </slot>
-
-    <slot />
-
-    <slot name="footer">
-      <Footer links={[...(LINKS as Link[]), ...(ACTIONS as Link[])]} social={SOCIAL} />
-    </slot>
-    <BasicScripts />
+    <Header current={current} />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>

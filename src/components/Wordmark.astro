@@ -1,0 +1,25 @@
+---
+/**
+ * "Anthony Ingle" set in Cormorant Garamond, the same typeface as the verses.
+ * Renders a link home unless `href` is null (e.g. inside the open phone menu).
+ */
+import { NAME } from "~/config";
+
+interface Props {
+  href?: string | null;
+  class?: string;
+}
+
+const { href = "/places", class: className } = Astro.props;
+const Tag = href ? "a" : "span";
+---
+
+<Tag
+  href={href ?? undefined}
+  class:list={[
+    "font-serif text-2xl leading-none font-medium tracking-[0.005em] whitespace-nowrap md:text-[28px]",
+    className,
+  ]}
+>
+  {NAME}
+</Tag>

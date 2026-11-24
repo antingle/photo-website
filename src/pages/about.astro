@@ -1,29 +1,51 @@
 ---
-import Layout from "~/layouts/BaseLayout.astro";
-import { generateSrcset } from "~/utils/images";
-const sizes = [384, 768, 1152];
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { EMAIL, INSTAGRAM } from "~/config";
+import { getPhoto, placeholder, sized, srcset } from "~/lib/imagekit";
+
+const me = await getPhoto("me", "anthony");
 ---
 
-<Layout title={"About"}>
-  <main class="flex flex-wrap justify-center items-center gap-4 mx-4 mb-12">
-    <article class="w-96 rounded-xl overflow-hidden bg-light-secondary shadow-lg animate-slidein">
-      <img
-        src="https://ik.imagekit.io/anthonyinglephoto/anthony"
-        alt="Anthony Ingle"
-        sizes="(max-width: 416px) 93vw, 384px"
-        srcset={generateSrcset(sizes, "https://ik.imagekit.io/anthonyinglephoto/anthony")}
-        height={2700}
-        width={1800}
-        loading={"eager"}
-      />
-    </article>
-    <article class="w-96 p-4 rounded-sm flex flex-col items-start justify-center">
-      <h1 class="text-gray-900 text-3xl md:text-4xl mb-4 font-extrabold">👋 Hey, I'm Anthony</h1>
-      <p>
+<BaseLayout title="About" current="about">
+  <section
+    aria-labelledby="about-h"
+    class="flex flex-wrap items-start gap-10 px-5 pt-8 md:gap-18 md:px-16 md:pt-18"
+  >
+    <img
+      src={sized(me, 1080)}
+      srcset={srcset(me)}
+      sizes="(max-width: 767px) 100vw, 540px"
+      width={me.width}
+      height={me.height}
+      alt="Anthony Ingle"
+      loading="eager"
+      class="block w-full max-w-135 flex-[1_1_380px] bg-well bg-cover object-cover"
+      style={`aspect-ratio: ${me.ratio}; background-image: url(${placeholder(me)})`}
+    />
+
+    <div class="max-w-145 flex-[1_1_420px] text-lg/relaxed md:pt-6">
+      <h1 id="about-h" class="mb-7 font-serif text-[44px]/[1.05] md:text-[56px]">
+        Hi, I'm Anthony.
+      </h1>
+      {/* TODO: finish the bio (landscapes, people, where you're based). */}
+      <p class="mb-9">
         One of my favorite things to hold in my hands is my camera. I love capturing moments that
-        will be remembered forever. I am also a Computer Science major at Florida State University.
-        In my freetime I will sit down and build some stuff, like this website.
+        will be remembered forever.
       </p>
-    </article>
-  </main>
-</Layout>
+      <div class="flex flex-col gap-1.5 border-t border-line pt-6 text-base">
+        <span class="text-xs font-medium tracking-[0.16em] text-muted uppercase">Say hello</span>
+        <a href={`mailto:${EMAIL}`} class="underline-offset-4 hover:underline">
+          {EMAIL}
+        </a>
+        <a
+          href={INSTAGRAM}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline-offset-4 hover:underline"
+        >
+          @ant.ing on Instagram<span class="sr-only"> (opens in a new tab)</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

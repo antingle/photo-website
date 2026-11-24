@@ -4,11 +4,12 @@ export type IKImage = {
   createdAt: string;
   updatedAt: string;
   fileId: string;
-  tags: unknown[];
-  AITags: unknown[];
-  embeddedMetadata: unknown[];
-  customCoordinates: unknown[];
-  customMetadata: object;
+  tags: string[] | null;
+  AITags: unknown[] | null;
+  embeddedMetadata?: Record<string, unknown>;
+  customCoordinates: string | null;
+  customMetadata?: Record<string, unknown>;
+  description?: string;
   isPrivateFile: boolean;
   url: string;
   thumbnail: string;
