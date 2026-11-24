@@ -10,71 +10,78 @@ interface Props {
 const { current } = Astro.props;
 ---
 
-<header data-site-header class="glass sticky top-3 z-50 mx-6 mt-3 md:top-4 md:mx-20 md:mt-4">
-  <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-6 py-1 pr-1 pl-4 md:px-7 md:py-3">
-    <nav aria-label="Main" class="hidden md:block">
-      <ul class="flex list-none gap-7 text-[15px]">
-        {LINKS.map(({ key, text, href }) => (
-          <li>
-            <a
-              href={href}
-              aria-current={key === current ? "page" : undefined}
-              class:list={[
-                "nav-link transition-colors hover:text-ink",
-                key === current ? "text-ink" : "text-muted",
-              ]}
-            >
-              {text}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-
-    <Wordmark class="col-start-1 md:col-start-2 md:justify-self-center" />
-
-    <div class="col-start-3 flex justify-end">
-      <SocialLinks class="hidden md:flex" />
-      <button
-        type="button"
-        data-menu-toggle
-        aria-expanded="false"
-        aria-controls="mobile-menu"
-        aria-label="Menu"
-        class="inline-flex size-12 items-center justify-center md:hidden"
-      >
-        <span class="menu-icon" aria-hidden="true">
-          <span></span>
-          <span></span>
-        </span>
-      </button>
-    </div>
-  </div>
-
-  {/* Phone menu: the bar grows downward to reveal it. */}
-  <div id="mobile-menu" class="menu-panel md:hidden" inert>
-    <div class="overflow-hidden">
-      <nav aria-label="Main" class="px-4 pt-1 pb-4">
-        <ul class="flex list-none flex-col font-serif text-[30px]/[1.35]">
-          {LINKS.map(({ key, text, href }, i) => (
-            <li style={`--i: ${i}`}>
+{/*
+ * The wrapper reserves the closed bar's height (56px phone / 68px desktop) in
+ * the page layout. The glass bar is positioned inside it, so when the phone
+ * menu expands the bar grows over the page instead of pushing content down.
+ */}
+<div class="sticky top-2 z-50 mx-6 mt-2 h-14 md:top-2.5 md:mx-20 md:mt-2.5 md:h-[68px]">
+  <header data-site-header class="glass absolute inset-x-0 top-0 isolate">
+    <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-6 py-1 pr-1 pl-4 md:px-7 md:py-3">
+      <nav aria-label="Main" class="hidden md:block">
+        <ul class="flex list-none gap-7 text-[15px]">
+          {LINKS.map(({ key, text, href }) => (
+            <li>
               <a
                 href={href}
                 aria-current={key === current ? "page" : undefined}
-                class:list={["block py-1", key === current ? "text-ink" : "text-muted"]}
+                class:list={[
+                  "nav-link transition-colors hover:text-ink",
+                  key === current ? "text-ink" : "text-muted",
+                ]}
               >
                 {text}
               </a>
             </li>
           ))}
         </ul>
-        <div class="menu-socials mt-2 -ml-2.5" style={`--i: ${LINKS.length}`}>
-          <SocialLinks />
-        </div>
       </nav>
+
+      <Wordmark class="col-start-1 md:col-start-2 md:justify-self-center" />
+
+      <div class="col-start-3 flex justify-end">
+        <SocialLinks class="hidden md:flex" />
+        <button
+          type="button"
+          data-menu-toggle
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Menu"
+          class="inline-flex size-12 items-center justify-center md:hidden"
+        >
+          <span class="menu-icon" aria-hidden="true">
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+      </div>
     </div>
-  </div>
-</header>
+
+    {/* Phone menu: the bar grows downward to reveal it. */}
+    <div id="mobile-menu" class="menu-panel md:hidden" inert>
+      <div class="overflow-hidden">
+        <nav aria-label="Main" class="px-4 pt-1 pb-4">
+          <ul class="flex list-none flex-col font-serif text-[30px]/[1.35]">
+            {LINKS.map(({ key, text, href }, i) => (
+              <li style={`--i: ${i}`}>
+                <a
+                  href={href}
+                  aria-current={key === current ? "page" : undefined}
+                  class:list={["block py-1", key === current ? "text-ink" : "text-muted"]}
+                >
+                  {text}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <div class="menu-socials mt-2 -ml-2.5" style={`--i: ${LINKS.length}`}>
+            <SocialLinks />
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+</div>
 
 <style>
   /*
@@ -103,7 +110,7 @@ const { current } = Astro.props;
     inset: 0;
     border-radius: inherit;
     pointer-events: none;
-    /* Behind the text, above the glass (the sticky header is its own stacking context). */
+    /* Behind the text, above the glass (`isolate` makes the header its own stacking context). */
     z-index: -1;
     background: linear-gradient(
       115deg,
@@ -118,8 +125,8 @@ const { current } = Astro.props;
 
   .glass[data-scrolled],
   .glass[data-open] {
-    /* Mostly white for legible text, still letting color through. */
-    background: linear-gradient(180deg, rgb(255 255 255 / 0.9), rgb(250 250 248 / 0.8));
+    /* White enough for legible text, while still letting color through. */
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.75), rgb(250 250 248 / 0.62));
     backdrop-filter: blur(14px) saturate(160%) brightness(1.04);
     -webkit-backdrop-filter: blur(14px) saturate(160%) brightness(1.04);
     box-shadow:
