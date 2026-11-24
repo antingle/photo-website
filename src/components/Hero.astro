@@ -7,13 +7,25 @@ interface Props {
 }
 
 const { photo, alt } = Astro.props;
+
+// The hero is cropped to fill a fixed height (object-fit: cover). On tall
+// screens that crop is wider than the viewport, so the browser must be told
+// the drawn width (height × aspect ratio), not 100vw, or it picks a file too
+// small and the photo looks soft. Keep the vh values in sync with the classes below.
+const PHONE_HEIGHT_VH = 78;
+const DESKTOP_HEIGHT_VH = 88;
+const sizes = [
+  `(max-width: 767px) ${Math.ceil(PHONE_HEIGHT_VH * photo.ratio)}vh`,
+  `(orientation: portrait) ${Math.ceil(DESKTOP_HEIGHT_VH * photo.ratio)}vh`,
+  "100vw",
+].join(", ");
 ---
 
 <figure>
   <img
     src={sized(photo, 1920)}
     srcset={srcset(photo)}
-    sizes="100vw"
+    sizes={sizes}
     width={photo.width}
     height={photo.height}
     alt={alt}
