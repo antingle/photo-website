@@ -10,10 +10,7 @@ interface Props {
 const { current } = Astro.props;
 ---
 
-<header
-  data-site-header
-  class="sticky top-2 z-50 mx-2.5 mt-2 rounded-[18px] border border-transparent bg-paper transition-[background-color,border-color,box-shadow] duration-250 data-scrolled:border-white/55 data-scrolled:bg-paper/62 data-scrolled:shadow-[inset_0_1px_0_rgb(255_255_255/0.85),0_1px_0_rgb(22_22_22/0.06),0_10px_28px_rgb(22_22_22/0.1)] data-scrolled:backdrop-blur-[22px] data-scrolled:backdrop-saturate-170 motion-reduce:transition-none md:top-3.5 md:mx-6 md:mt-3.5 md:rounded-[22px]"
->
+<header data-site-header class="glass sticky top-3 z-50 mx-6 mt-3 md:top-4 md:mx-20 md:mt-4">
   <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-6 py-1 pr-1 pl-4 md:px-7 md:py-3">
     <nav aria-label="Main" class="hidden md:block">
       <ul class="flex list-none gap-7 text-[15px]">
@@ -23,7 +20,7 @@ const { current } = Astro.props;
               href={href}
               aria-current={key === current ? "page" : undefined}
               class:list={[
-                "transition-colors hover:text-ink",
+                "nav-link transition-colors hover:text-ink",
                 key === current ? "text-ink" : "text-muted",
               ]}
             >
@@ -40,88 +37,236 @@ const { current } = Astro.props;
       <SocialLinks class="hidden md:flex" />
       <button
         type="button"
-        data-menu-open
-        aria-label="Open menu"
-        aria-haspopup="dialog"
+        data-menu-toggle
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Menu"
         class="inline-flex size-12 items-center justify-center md:hidden"
       >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          aria-hidden="true"
-        >
-          <path d="M4 9h16M4 15h16"></path>
-        </svg>
+        <span class="menu-icon" aria-hidden="true">
+          <span></span>
+          <span></span>
+        </span>
       </button>
     </div>
   </div>
 
-  <dialog
-    data-menu
-    aria-label="Menu"
-    class="fixed inset-0 m-0 h-dvh border-0 max-h-none w-full max-w-none flex-col bg-paper/86 px-4 pt-3.5 pb-10 text-ink backdrop-blur-[24px] backdrop-saturate-170 backdrop:bg-transparent open:flex"
-  >
-    <div class="flex items-center justify-between pl-3.5">
-      <Wordmark href={null} />
-      <button
-        type="button"
-        data-menu-close
-        aria-label="Close menu"
-        class="inline-flex size-12 items-center justify-center"
-      >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.6"
-          aria-hidden="true"
-        >
-          <path d="M6 6l12 12M18 6L6 18"></path>
-        </svg>
-      </button>
+  {/* Phone menu: the bar grows downward to reveal it. */}
+  <div id="mobile-menu" class="menu-panel md:hidden" inert>
+    <div class="overflow-hidden">
+      <nav aria-label="Main" class="px-4 pt-1 pb-4">
+        <ul class="flex list-none flex-col font-serif text-[30px]/[1.35]">
+          {LINKS.map(({ key, text, href }, i) => (
+            <li style={`--i: ${i}`}>
+              <a
+                href={href}
+                aria-current={key === current ? "page" : undefined}
+                class:list={["block py-1", key === current ? "text-ink" : "text-muted"]}
+              >
+                {text}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="menu-socials mt-2 -ml-2.5" style={`--i: ${LINKS.length}`}>
+          <SocialLinks />
+        </div>
+      </nav>
     </div>
-    <nav aria-label="Main" class="mt-16 pl-3.5">
-      <ul class="flex list-none flex-col gap-1.5 font-serif text-[44px] leading-tight">
-        {LINKS.map(({ key, text, href }) => (
-          <li>
-            <a
-              href={href}
-              aria-current={key === current ? "page" : undefined}
-              class={key === current ? "text-ink" : "text-muted"}
-            >
-              {text}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-    <SocialLinks class="mt-auto gap-2" iconSize={22} />
-  </dialog>
+  </div>
 </header>
 
-<script>
-  // Turn the header into frosted glass once the page scrolls; plain white at the top.
-  const updateHeader = () =>
-    document
-      .querySelector("[data-site-header]")
-      ?.toggleAttribute("data-scrolled", window.scrollY > 8);
+<style>
+  /*
+   * The navbar is plain paper at the top of the page and turns into "liquid
+   * glass" once the page scrolls or the phone menu opens (data-scrolled /
+   * data-open are set by the script below).
+   */
+  .glass {
+    border-radius: 18px;
+    background: var(--color-paper);
+    transition:
+      background 0.3s ease,
+      box-shadow 0.3s ease;
+  }
 
-  window.addEventListener("scroll", updateHeader, { passive: true });
+  @media (min-width: 768px) {
+    .glass {
+      border-radius: 22px;
+    }
+  }
+
+  /* Glossy diagonal sheen, only visible in the glass state. */
+  .glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    /* Behind the text, above the glass (the sticky header is its own stacking context). */
+    z-index: -1;
+    background: linear-gradient(
+      115deg,
+      rgb(255 255 255 / 0.55) 0%,
+      rgb(255 255 255 / 0.12) 32%,
+      rgb(255 255 255 / 0) 55%,
+      rgb(255 255 255 / 0.16) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .glass[data-scrolled],
+  .glass[data-open] {
+    /* Mostly white for legible text, still letting color through. */
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.9), rgb(250 250 248 / 0.8));
+    backdrop-filter: blur(14px) saturate(160%) brightness(1.04);
+    -webkit-backdrop-filter: blur(14px) saturate(160%) brightness(1.04);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.95),
+      inset 0 12px 18px -14px rgb(255 255 255 / 0.9),
+      inset 0 -10px 18px -14px rgb(22 22 22 / 0.08),
+      0 12px 32px -8px rgb(22 22 22 / 0.18),
+      0 2px 6px rgb(22 22 22 / 0.06);
+  }
+
+  .glass[data-scrolled]::before,
+  .glass[data-open]::before {
+    opacity: 1;
+  }
+
+  /* Slightly darker inactive links on glass, so they never wash out over a photo. */
+  .glass[data-scrolled] .nav-link:not([aria-current="page"]) {
+    color: #4f4f4b;
+  }
+
+  /* --- Phone menu ------------------------------------------------------ */
+
+  /* Animating grid rows from 0fr to 1fr expands to the content's real height. */
+  .menu-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .glass[data-open] .menu-panel {
+    grid-template-rows: 1fr;
+  }
+
+  .menu-panel li,
+  .menu-socials {
+    opacity: 0;
+    transform: translateY(-6px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .glass[data-open] .menu-panel li,
+  .glass[data-open] .menu-socials {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.3s ease calc(80ms + var(--i) * 45ms),
+      transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) calc(80ms + var(--i) * 45ms);
+  }
+
+  /* Hamburger that turns into an ×. */
+  .menu-icon {
+    position: relative;
+    width: 20px;
+    height: 12px;
+  }
+
+  .menu-icon > span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1.6px;
+    border-radius: 1px;
+    background: currentColor;
+    transition:
+      top 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .menu-icon > span:first-child {
+    top: 0;
+  }
+
+  .menu-icon > span:last-child {
+    top: calc(100% - 1.6px);
+  }
+
+  [aria-expanded="true"] .menu-icon > span {
+    top: calc(50% - 0.8px);
+  }
+
+  [aria-expanded="true"] .menu-icon > span:first-child {
+    transform: rotate(45deg);
+  }
+
+  [aria-expanded="true"] .menu-icon > span:last-child {
+    transform: rotate(-45deg);
+  }
+
+  /* People who ask their OS for less transparency get a solid bar. */
+  @media (prefers-reduced-transparency: reduce) {
+    .glass[data-scrolled],
+    .glass[data-open] {
+      background: rgb(250 250 248 / 0.98);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glass,
+    .glass::before,
+    .menu-panel,
+    .menu-panel li,
+    .menu-socials,
+    .menu-icon > span {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  const header = () => document.querySelector<HTMLElement>("[data-site-header]");
+
+  // Liquid glass once the page scrolls; plain paper at the top.
+  const updateScrolled = () => header()?.toggleAttribute("data-scrolled", window.scrollY > 8);
+  window.addEventListener("scroll", updateScrolled, { passive: true });
+
+  const setMenu = (open: boolean) => {
+    const el = header();
+    if (!el) return;
+    el.toggleAttribute("data-open", open);
+    el.querySelector("[data-menu-toggle]")?.setAttribute("aria-expanded", String(open));
+    el.querySelector<HTMLElement>("#mobile-menu")?.toggleAttribute("inert", !open);
+  };
 
   document.addEventListener("astro:page-load", () => {
-    updateHeader();
+    updateScrolled();
+    setMenu(false);
 
-    const menu = document.querySelector<HTMLDialogElement>("[data-menu]");
-    if (!menu) return;
-    document.querySelector("[data-menu-open]")?.addEventListener("click", () => menu.showModal());
-    menu
-      .querySelectorAll("[data-menu-close], a")
-      .forEach((el) => el.addEventListener("click", () => menu.close()));
+    const el = header();
+    if (!el) return;
+    el.querySelector("[data-menu-toggle]")?.addEventListener("click", () =>
+      setMenu(!el.hasAttribute("data-open"))
+    );
+    el.querySelectorAll("#mobile-menu a").forEach((a) =>
+      a.addEventListener("click", () => setMenu(false))
+    );
+  });
+
+  // Close on Escape or a tap outside the bar.
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setMenu(false);
+  });
+  document.addEventListener("click", (e) => {
+    const el = header();
+    if (el?.hasAttribute("data-open") && !el.contains(e.target as Node)) setMenu(false);
   });
 </script>

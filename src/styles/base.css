@@ -19,11 +19,6 @@
     scrollbar-gutter: stable;
   }
 
-  /* Keep the page from scrolling behind the open phone menu. */
-  html:has(dialog[open]) {
-    overflow: hidden;
-  }
-
   body {
     @apply flex min-h-screen flex-col bg-paper font-sans text-ink antialiased;
   }
